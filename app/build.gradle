@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
-        applicationId "ch.renuo.hackzurich2016.hackzurich2016"
+        applicationId "ch.renuo.hackzurich2016"
         minSdkVersion 16
         targetSdkVersion 24
         versionCode 1

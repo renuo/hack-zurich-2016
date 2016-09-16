@@ -1,4 +1,4 @@
-package ch.renuo.hackzurich2016.hackzurich2016;
+package ch.renuo.hackzurich2016;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
