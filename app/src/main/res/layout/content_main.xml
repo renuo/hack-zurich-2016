@@ -38,8 +38,8 @@
                 android:id="@+id/createHouseholdButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onJoinHouseholdClick"
                 android:text="@string/create_group"
+                android:onClick="onCreateHouseholdClick"
                 android:backgroundTint="#fefaa3" />
         </LinearLayout>
 
@@ -54,6 +54,7 @@
                 android:id="@+id/joinHouseholdButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:onClick="onJoinHouseholdClick"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="@string/join_group" />
         </LinearLayout>

@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 public class UI {
     private static UI _ui;
     private UI(){}
-    private List<Callable<Void>> refreshCallbacks = new ArrayList<>();
+    private Runnable refreshCallback;
 
     public static UI ui(){
         if(_ui == null){
@@ -20,17 +20,13 @@ public class UI {
     }
 
     public void refreshUI(){
-        for (Callable<Void> cb : this.refreshCallbacks) {
-            try {
-                cb.call();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if(this.refreshCallback != null){
+            this.refreshCallback.run();
         }
     }
 
-    public void registerRefreshCallback(Callable<Void> callback){
-        refreshCallbacks.add(callback);
+    public void registerRefreshCallback(Runnable callback){
+        this.refreshCallback = callback;
     }
 
 }

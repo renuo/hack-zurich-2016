@@ -35,22 +35,38 @@ import java.util.concurrent.Callable;
 
 import ch.renuo.hackzurich2016.R;
 import ch.renuo.hackzurich2016.UI;
+import ch.renuo.hackzurich2016.data.HouseholdDatabase;
+import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
+import ch.renuo.hackzurich2016.data.SuccessValueEventListener;
 import ch.renuo.hackzurich2016.mocks.HouseholdDatabaseMock;
 import ch.renuo.hackzurich2016.models.Cluster;
 import ch.renuo.hackzurich2016.models.ClusterAlarm;
 import ch.renuo.hackzurich2016.models.ClusterAlarmImpl;
+import ch.renuo.hackzurich2016.models.ClusterImpl;
+import ch.renuo.hackzurich2016.models.Device;
+import ch.renuo.hackzurich2016.models.DeviceImpl;
+import ch.renuo.hackzurich2016.models.Household;
+import ch.renuo.hackzurich2016.models.HouseholdImpl;
 import ch.renuo.hackzurich2016.models.SystemAlarm;
 
 public class HouseholdActivity extends ListActivity {
 
     public static final int EDIT_ALARM_REQUEST = 1;
 
-    private String deviceId;
+    private UUID deviceId;
     private String householdId;
 
-    private HouseholdDatabaseMock hdb;
+    private Household household = new HouseholdImpl(UUID.randomUUID(), new ArrayList<Cluster>());
+
+    private HouseholdDatabase hdb;
 
     private HouseholdActivity self = this;
+
+    private void redraw(){
+        final ClusterListAdapter adapter = new ClusterListAdapter(this, this.household.getClusters());
+        this.setListAdapter(adapter);
+        Log.e("r", "redraw");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,27 +74,29 @@ public class HouseholdActivity extends ListActivity {
         setContentView(R.layout.activity_household);
 
         final Intent intent = getIntent();
-        this.deviceId = intent.getStringExtra(getString(R.string.device_id));
+        this.deviceId = UUID.fromString(intent.getStringExtra(getString(R.string.device_id)));
         this.householdId = intent.getStringExtra(getString(R.string.household_id));
+        boolean create = intent.getBooleanExtra(getString(R.string.create_household), false);
 
-        this.hdb = this.initializeDatabase(this.householdId);
 
-        final ClusterListAdapter adapter = new ClusterListAdapter(this, this.hdb.getHousehold().getClusters());
-        this.setListAdapter(adapter);
-
-        UI.ui().registerRefreshCallback(new Callable<Void>() {
+        UI.ui().registerRefreshCallback(new Runnable() {
             @Override
-            public Void call() throws Exception {
+            public void run() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 //                        getListView().invalidateViews();
-                        adapter.notifyDataSetChanged();
+                        ClusterListAdapter adapter = ((ClusterListAdapter)self.getListAdapter());
+                        if(adapter != null) {
+                            adapter.notifyDataSetChanged();
+                        }
+                        redraw();
                     }
                 });
-                return null;
             }
         });
+
+        this.hdb = this.initializeDatabase(this.householdId, create);
     }
 
     @Override
@@ -86,12 +104,51 @@ public class HouseholdActivity extends ListActivity {
         super.onDestroy();
     }
 
-    private HouseholdDatabaseMock initializeDatabase(String householdId){
-        if(HouseholdDatabaseMock.db == null){
-            HouseholdDatabaseMock.db = new HouseholdDatabaseMock(householdId);
+//    private HouseholdDatabaseMock initializeDatabase(String householdId){
+//        if(HouseholdDatabaseMock.db == null){
+//            HouseholdDatabaseMock.db = new HouseholdDatabaseMock(householdId);
+//        }
+//        Log.e("e", "initializing db");
+//        return HouseholdDatabaseMock.db;
+//    }
+
+    private Cluster findMyCluster(){
+        for (Cluster cluster : this.household.getClusters()) {
+            for (Device device : cluster.getDevices()) {
+                if(device.getId().equals(this.deviceId)){
+                    return cluster;
+                }
+            }
         }
-        Log.e("e", "initializing db");
-        return HouseholdDatabaseMock.db;
+        return null;
+    }
+
+    private HouseholdDatabase initializeDatabase(String householdId, boolean create){
+        HouseholdDatabase db = new HouseholdDatabaseImpl(UUID.fromString(householdId));
+        SuccessValueEventListener<Household> listener = new SuccessValueEventListener<Household>() {
+            @Override
+            protected void onChange(Household household) {
+                self.household = household;
+                Log.e("e","onchange");
+                UI.ui().refreshUI();
+
+                //ensure that we ourselves are in the list
+                Cluster myCluster = findMyCluster();
+                if(myCluster == null){
+                    myCluster = new ClusterImpl(UUID.randomUUID(), "You", new ArrayList<ClusterAlarm>(), new ArrayList<Device>(){{
+                        new DeviceImpl(self.deviceId, new ArrayList<SystemAlarm>());
+                    }});
+                    self.household.getClusters().add(0, myCluster);
+                    hdb.updateHousehold(self.household);
+                }
+            }
+        };
+        if(create){
+            db.createHousehold(listener);
+        }else{
+            db.listenForUpdates(listener);
+        }
+        return db;
     }
 
     private class ClusterListAdapter extends ArrayAdapter<Cluster>{
@@ -122,7 +179,7 @@ public class HouseholdActivity extends ListActivity {
                                     String result = input.getText().toString();
                                     if(result != null && result.length() > 0) {
                                         cluster.setName(result);
-                                        hdb.saveCluster(hdb.getHousehold(), cluster);
+                                        hdb.updateHousehold(self.household);
                                     }
                                 }
                             }
@@ -180,7 +237,7 @@ public class HouseholdActivity extends ListActivity {
                     @Override
                     public void onClick(View v) {
                         alarm.setActive(!alarm.getActive());
-                        hdb.saveClusterAlarm(cluster, alarm);
+                        hdb.updateHousehold(self.household);
                     }
                 });
                 tc.setOnLongClickListener(new View.OnLongClickListener() {
@@ -213,7 +270,7 @@ public class HouseholdActivity extends ListActivity {
     }
 
     private Cluster findClusterById(String id){
-        for (Cluster cluster : this.hdb.getHousehold().getClusters()) {
+        for (Cluster cluster : this.household.getClusters()) {
             if(cluster.getId().toString().equals(id)){
                 return cluster;
             }
@@ -222,7 +279,7 @@ public class HouseholdActivity extends ListActivity {
     }
 
     private Pair<Cluster, ClusterAlarm> findAlarmById(String id){
-        for (Cluster cluster : this.hdb.getHousehold().getClusters()) {
+        for (Cluster cluster : this.household.getClusters()) {
             for (ClusterAlarm alarm : cluster.getClusterAlarms()) {
                 if(alarm.getId().toString().equals(id)){
                     return Pair.create(cluster, alarm);
@@ -245,7 +302,8 @@ public class HouseholdActivity extends ListActivity {
             if(resultCode > 0 && pp != null){
                 Cluster cluster = pp.first;
                 ClusterAlarm alarm = pp.second;
-                this.hdb.deleteClusterAlarm(cluster, alarm);
+                cluster.getClusterAlarms().remove(alarm);
+                hdb.updateHousehold(self.household);
             }
 
             else if(resultCode == 0){
@@ -253,7 +311,9 @@ public class HouseholdActivity extends ListActivity {
                 if(alarmNew) {
                     Cluster cluster = findClusterById(clusterId);
                     ClusterAlarm alarm = new ClusterAlarmImpl(UUID.randomUUID(), alarmTime, alarmActive, new ArrayList<SystemAlarm>());
-                    this.hdb.saveClusterAlarm(cluster, alarm);
+                    cluster.getClusterAlarms().add(alarm);
+                    hdb.updateHousehold(self.household);
+                    Log.e("n", "newalarm");
                 }
 
                 else if(pp != null){
@@ -261,7 +321,7 @@ public class HouseholdActivity extends ListActivity {
                     ClusterAlarm alarm = pp.second;
                     alarm.setTime(alarmTime);
                     alarm.setActive(alarmActive);
-                    this.hdb.saveClusterAlarm(cluster, alarm);
+                    this.hdb.updateHousehold(self.household);
                 }
             }
 
