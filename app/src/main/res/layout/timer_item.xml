@@ -8,11 +8,12 @@
         android:id="@+id/textClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="50px"
+        android:layout_marginRight="35px"
         android:background="@color/colorSecondary"
         android:paddingBottom="15px"
         android:paddingLeft="15px"
         android:paddingRight="15px"
         android:paddingTop="15px"
-        android:text="NaN" />
+        android:text="NaN"
+        android:textSize="25sp"/>
 </LinearLayout>
