@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -29,6 +31,7 @@ import com.firebase.ui.auth.ui.AcquireEmailHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -79,6 +82,7 @@ public class HouseholdActivity extends AppCompatActivity {
         });
         final ClusterListAdapter adapter = new ClusterListAdapter(this, clusters);
         ((ListView)findViewById(R.id.clusterList)).setAdapter(adapter);
+        setUserFromFirebase(FirebaseAuth.getInstance());
         Log.e("r", "redraw");
     }
 
@@ -111,6 +115,38 @@ public class HouseholdActivity extends AppCompatActivity {
         });
 
         this.hdb = this.initializeDatabase(this.householdId, create);
+
+        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                self.invalidateOptionsMenu();
+                setUserFromFirebase(firebaseAuth);
+            }
+        });
+    }
+
+    private void setUserFromFirebase(@NonNull FirebaseAuth firebaseAuth) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        if(user != null && self.household != null) {
+            Device device = findMyDevice(self.household);
+            Cluster cluster = findMyCluster(self.household);
+            if (cluster != null) {
+                String name = user.getDisplayName();
+                if (cluster.getName() == null || cluster.getName().equals("You") || cluster.getName().length() == 0) {
+                    cluster.setName(name);
+                    hdb.updateHousehold(self.household);
+                }
+                Uri photoUrl = user.getPhotoUrl();
+                if (photoUrl != null) {
+                    String imageUrl = photoUrl.toString();
+                    if (device.getImageUrl() == null || !device.getImageUrl().equals(imageUrl)) {
+                        device.setImageUrl(imageUrl);
+                        hdb.updateHousehold(self.household);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -125,6 +161,18 @@ public class HouseholdActivity extends AppCompatActivity {
 //        Log.e("e", "initializing db");
 //        return HouseholdDatabaseMock.db;
 //    }
+
+    private Device findMyDevice(Household household){
+        for (Cluster cluster : household.getClusters()) {
+            for (Device device : cluster.getDevices()) {
+                if(device.getId().equals(self.deviceId)){
+                    return device;
+                }
+            }
+        }
+
+        return null;
+    }
 
     private Cluster findMyCluster(Household household){
         for (Cluster cluster : household.getClusters()) {
@@ -397,12 +445,14 @@ public class HouseholdActivity extends AppCompatActivity {
                                     AuthUI.FACEBOOK_PROVIDER)
                             .build(),
                     AcquireEmailHelper.RC_SIGN_IN);
+            return true;
         }
 
         else if (id == R.id.action_logout){
             Log.e("a", "logout");
             FirebaseAuth auth = FirebaseAuth.getInstance();
             auth.signOut();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

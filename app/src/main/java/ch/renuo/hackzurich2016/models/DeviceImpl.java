@@ -28,4 +28,9 @@ public class DeviceImpl implements Device {
     public List<SystemAlarm> getSystemAlarms() {
         return systemAlarm;
     }
+
+    @Override
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
