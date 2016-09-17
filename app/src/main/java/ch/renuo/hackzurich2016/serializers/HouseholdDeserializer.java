@@ -25,6 +25,8 @@ public class HouseholdDeserializer {
     }
 
     public Household deserialize() {
+        clusters = new ArrayList<>();
+
         deserializeClusters();
         deserializeDevices();
         deserializeClusterAlarms();
@@ -34,12 +36,10 @@ public class HouseholdDeserializer {
     }
 
     private void deserializeClusters() {
-        clusters = new ArrayList<>();
-
-        List<Map<String, Object>> serializedClusters = (List<Map<String, Object>>) serialized.get("clusters");
+        Object serializedClusters = serialized.get("clusters");
         if (serializedClusters == null) return;
 
-        for (Map<String, Object> serializedCluster : serializedClusters)
+        for (Map<String, Object> serializedCluster : (List<Map<String, Object>>) serializedClusters)
             clusters.add(getCluster(serializedCluster));
     }
 

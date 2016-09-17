@@ -8,7 +8,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.UUID;
 
 import ch.renuo.hackzurich2016.models.Cluster;
@@ -27,37 +26,36 @@ public class HouseholdDatabaseImpl implements HouseholdDatabase {
     }
 
     @Override
-    public void getHousehold(final SuccessValueEventListener<Household> listener) {
-        addListener(listener, householdDb);
-    }
-
-    @Override
-    public void createHousehold(final SuccessValueEventListener<Household> listener) {
-        final Household household = new HouseholdImpl(UUID.randomUUID(), new ArrayList<Cluster>());
-        Map<String, Object> serializedHousehold = new HouseholdSerializer(household).serialize();
-        householdDb.setValue(serializedHousehold);
-
-        addListener(listener, householdDb);
-    }
-
-    private void addListener(final SuccessValueEventListener<Household> listener, DatabaseReference householdDb) {
+    public void listenForUpdates(final SuccessValueEventListener<Household> listener) {
         householdDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Household household = new HouseholdDeserializer(dataSnapshot.getValue()).deserialize();
+                Object dataSnapshotValue = dataSnapshot.getValue();
+                if (dataSnapshotValue == null) {
+                    listener.onChangeCall(null);
+                    return;
+                }
+                Household household = new HouseholdDeserializer(dataSnapshotValue).deserialize();
                 listener.onChangeCall(household);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // no errors will occur, ever
+                // Of course, no errors will occur. Ever. ¯\_(ツ)_/¯
             }
         });
     }
 
     @Override
+    public void createHousehold(final SuccessValueEventListener<Household> listener) {
+        final Household household = new HouseholdImpl(UUID.randomUUID(), new ArrayList<Cluster>());
+        updateHousehold(household);
+        listenForUpdates(listener);
+    }
+
+    @Override
     public void updateHousehold(Household household) {
-        // TODO: implement this
+        householdDb.setValue(new HouseholdSerializer(household).serialize());
     }
 
     public void awaitHack() throws Exception {
