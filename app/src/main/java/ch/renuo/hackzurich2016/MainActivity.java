@@ -28,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
 //        myRef.setValue("Hello, World 2");
 //        this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE).edit().clear().commit();
 
-        Intent service = new Intent(this, SystemAlarmService.class);
-        startService(service);
-
         setContentView(R.layout.activity_main);
 
 //        FirebaseAuth auth = FirebaseAuth.getInstance();

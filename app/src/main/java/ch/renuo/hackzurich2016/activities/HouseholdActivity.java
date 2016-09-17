@@ -46,6 +46,7 @@ import java.util.UUID;
 import ch.renuo.hackzurich2016.MainActivity;
 import ch.renuo.hackzurich2016.R;
 import ch.renuo.hackzurich2016.UI;
+import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
 import ch.renuo.hackzurich2016.data.HouseholdDatabase;
 import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
 import ch.renuo.hackzurich2016.data.SuccessValueEventListener;
@@ -203,6 +204,10 @@ public class HouseholdActivity extends AppCompatActivity {
                     return;
                 }
                 self.household = household;
+
+                Intent service = new Intent(self, SystemAlarmService.class);
+                startService(service);
+
                 Log.e("e","onchange");
                 UI.ui().refreshUI();
 
