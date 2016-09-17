@@ -13,11 +13,15 @@ import ch.renuo.hackzurich2016.alarms.AlarmController;
 
 public class AlarmActivity extends AppCompatActivity {
 
+    private Ringtone ringtone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getRingtone().play();
+        Uri alarmNotification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        this.ringtone = RingtoneManager.getRingtone(this, alarmNotification);
+        this.ringtone.play();
         setContentView(R.layout.activity_alarm);
     }
 
@@ -29,14 +33,15 @@ public class AlarmActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.alarmUUIDTextView)).setText(alarmUUID);
     }
 
-    private Ringtone getRingtone() {
-        Uri alarmNotification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        return RingtoneManager.getRingtone(this, alarmNotification);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("AlarmActivity", "Ringtone is playing while destorying activity: " + this.ringtone.isPlaying());
+        this.ringtone.stop();
     }
 
+
     public void onTurnOffButtonClick(View view) {
-        Log.d("AlarmActivity", "Ringtone is playing: " + getRingtone().isPlaying());
-        getRingtone().stop();
         finish();
     }
 }

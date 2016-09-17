@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".activities.HouseholdActivity" />
         <activity android:name=".activities.EditAlarmActivity"></activity>
-        <activity android:name=".activities.AlarmActivity"></activity>
+        <activity android:name=".activities.AlarmActivity" android:launchMode="singleInstance"></activity>
         <activity android:name=".activities.BarcodeActivity"></activity>
         <receiver android:name=".alarms.StartAlarmReceiver" ></receiver>
     </application>
