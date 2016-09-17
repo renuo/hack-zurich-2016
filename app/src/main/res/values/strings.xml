@@ -4,6 +4,7 @@
     <string name="preference_key_file">com.renuo.hackzurich2016.settings</string>
     <string name="device_id">com.renuo.hackzurich2016.device_id</string>
     <string name="household_id">com.renuo.hackzurich2016.household_id</string>
+    <string name="create_household">com.renuo.hackzurich2016.create_household</string>
     <string name="cluster_id">com.renuo.hackzurich2016.cluster_id</string>
     <string name="alarm_id">com.renuo.hackzurich2016.alarm_id</string>
     <string name="alarm_time">com.renuo.hackzurich2016.alarm_time</string>
