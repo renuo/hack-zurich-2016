@@ -8,4 +8,6 @@
     <string name="alarm_time">com.renuo.hackzurich2016.alarm_time</string>
     <string name="alarm_active">com.renuo.hackzurich2016.alarm_active</string>
     <string name="alarm_new">com.renuo.hackzurich2016.alarm_new</string>
+    <string name="join_group">Join Existing Household</string>
+    <string name="create_group">Register New Household</string>
 </resources>
