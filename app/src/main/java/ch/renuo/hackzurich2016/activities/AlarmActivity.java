@@ -111,12 +111,12 @@ public class AlarmActivity extends AppCompatActivity {
                     return;
                 }
 
-                Pair<Cluster, ClusterAlarm> alarmPair = new HouseholdQuery(household).findAlarmById(_currentAlarmId);
-                if (alarmPair == null || !alarmPair.second.getActive()) {
+                ClusterAlarm alarm = new HouseholdQuery(household).findClusterAlarmById(_currentAlarmId);
+                if (alarm == null || !alarm.getActive()) {
                     stopAlarm();
                 } else {
                     _household = household;
-                   _currentAlarm = alarmPair.second;
+                   _currentAlarm = alarm;
                 }
             }
         });

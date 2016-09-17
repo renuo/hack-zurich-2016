@@ -16,7 +16,6 @@ public class HouseholdQuery {
 
     public HouseholdQuery(Household household) {
         this._household = household;
-
     }
 
     public Cluster findClusterById(String id) {
@@ -28,7 +27,7 @@ public class HouseholdQuery {
         return null;
     }
 
-    public Pair<Cluster, ClusterAlarm> findAlarmById(String id) {
+    public Pair<Cluster, ClusterAlarm> findClusterAndClusterAlarmById(String id) {
         for (Cluster cluster : this._household.getClusters()) {
             for (ClusterAlarm alarm : cluster.getClusterAlarms()) {
                 if (alarm.getId().toString().equals(id)) {
@@ -38,6 +37,18 @@ public class HouseholdQuery {
         }
         return null;
     }
+
+    public ClusterAlarm findClusterAlarmById(String id) {
+        for (Cluster cluster : this._household.getClusters()) {
+            for (ClusterAlarm alarm : cluster.getClusterAlarms()) {
+                if (alarm.getId().toString().equals(id)) {
+                    return alarm;
+                }
+            }
+        }
+        return null;
+    }
+
 
     public Device findDeviceById(String deviceId) {
         for (Cluster cluster : _household.getClusters()) {
