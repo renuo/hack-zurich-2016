@@ -12,11 +12,10 @@ public class ClusterAlarmImpl implements ClusterAlarm {
     private boolean active;
     private List<SystemAlarm> systemAlarms;
 
-    public ClusterAlarmImpl(UUID id, String time, boolean active, List<SystemAlarm> systemAlarms) {
+    public ClusterAlarmImpl(UUID id, String time, boolean active) {
         this.id = id;
         this.time = time;
         this.active = active;
-        this.systemAlarms = systemAlarms;
     }
 
     @Override
@@ -61,9 +60,5 @@ public class ClusterAlarmImpl implements ClusterAlarm {
     @Override
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    public List<SystemAlarm> getSystemAlarms() {
-        return systemAlarms;
     }
 }

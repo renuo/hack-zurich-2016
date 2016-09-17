@@ -8,10 +8,9 @@ public class DeviceImpl implements Device {
     private List<SystemAlarm> systemAlarm;
     private String imageUrl;
 
-    public DeviceImpl(UUID id, String imageUrl, List<SystemAlarm> systemAlarm) {
+    public DeviceImpl(UUID id, String imageUrl) {
         this.id = id;
         this.imageUrl = imageUrl;
-        this.systemAlarm = systemAlarm;
     }
 
     @Override
@@ -22,11 +21,6 @@ public class DeviceImpl implements Device {
     @Override
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    @Override
-    public List<SystemAlarm> getSystemAlarms() {
-        return systemAlarm;
     }
 
     @Override

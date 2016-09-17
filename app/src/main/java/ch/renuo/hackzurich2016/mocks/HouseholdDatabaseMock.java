@@ -32,16 +32,16 @@ public class HouseholdDatabaseMock {
         this.household = new HouseholdImpl(UUID.randomUUID(), new ArrayList<Cluster>());
         Cluster cluster1 = new ClusterImpl(UUID.randomUUID(), "Cluster1", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
         this.household.getClusters().add(cluster1);
-        ClusterAlarm c1a1 = new ClusterAlarmImpl(UUID.randomUUID(), "12:33", false, new ArrayList<SystemAlarm>());
+        ClusterAlarm c1a1 = new ClusterAlarmImpl(UUID.randomUUID(), "12:33", false);
         cluster1.getClusterAlarms().add(c1a1);
-        ClusterAlarm c1a2 = new ClusterAlarmImpl(UUID.randomUUID(), "14:55", true, new ArrayList<SystemAlarm>());
+        ClusterAlarm c1a2 = new ClusterAlarmImpl(UUID.randomUUID(), "14:55", true);
         cluster1.getClusterAlarms().add(c1a2);
         for(int i=0;i<10;i++) {
-            cluster1.getClusterAlarms().add(new ClusterAlarmImpl(UUID.randomUUID(), "12:32", false, new ArrayList<SystemAlarm>()));
+            cluster1.getClusterAlarms().add(new ClusterAlarmImpl(UUID.randomUUID(), "12:32", false));
         }
         Cluster cluster2 = new ClusterImpl(UUID.randomUUID(), "Cluster2", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
         this.household.getClusters().add(cluster2);
-        ClusterAlarm c2a1 = new ClusterAlarmImpl(UUID.randomUUID(), "08:00", true, new ArrayList<SystemAlarm>());
+        ClusterAlarm c2a1 = new ClusterAlarmImpl(UUID.randomUUID(), "08:00", true);
         cluster2.getClusterAlarms().add(c2a1);
     }
 
