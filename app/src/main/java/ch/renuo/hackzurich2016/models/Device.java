@@ -6,5 +6,7 @@ import java.util.UUID;
 public interface Device {
     UUID getId();
 
+    String getImageUrl();
+
     List<SystemAlarm> getSystemAlarms();
 }

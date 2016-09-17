@@ -60,7 +60,8 @@ public class HouseholdDeserializer {
 
     private Device getDevice(Map<String, Object> serializedDevice) {
         UUID id = getUuid(serializedDevice.get("id"));
-        return new DeviceImpl(id, new ArrayList<SystemAlarm>());
+        String imageUrl = (String) serializedDevice.get("imageUrl");
+        return new DeviceImpl(id, imageUrl, new ArrayList<SystemAlarm>());
     }
 
     private void addDeviceToCluster(Device device, UUID clusterId) {
