@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.HouseholdActivity">
+    tools:context="ch.renuo.hackzurich2016.activities.HouseholdActivity">
 
     <ImageView
         android:id="@+id/main_backgroundImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:contentDescription="Risen and Shine"
+        android:contentDescription="Rise and Shine"
         android:scaleType="centerCrop"
         android:src="@drawable/rise_and_shine_light" />
 
