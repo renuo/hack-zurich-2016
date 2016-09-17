@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.util.UUID;
@@ -45,6 +47,14 @@ public class AlarmActivity extends AppCompatActivity {
         initializeReceiver();
 
         setContentView(R.layout.activity_alarm);
+
+        initializeWindow();
+    }
+
+    private void initializeWindow() {
+        final Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
     private void initializeReceiver() {
