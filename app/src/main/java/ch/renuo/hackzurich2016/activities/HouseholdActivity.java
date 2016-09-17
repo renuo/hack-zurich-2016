@@ -113,14 +113,15 @@ public class HouseholdActivity extends ListActivity {
 //        return HouseholdDatabaseMock.db;
 //    }
 
-    private Cluster findMyCluster(){
-        for (Cluster cluster : this.household.getClusters()) {
+    private Cluster findMyCluster(Household household){
+        for (Cluster cluster : household.getClusters()) {
             for (Device device : cluster.getDevices()) {
-                if(device.getId().equals(this.deviceId)){
+                if(device.getId().equals(self.deviceId)){
                     return cluster;
                 }
             }
         }
+
         return null;
     }
 
@@ -134,13 +135,12 @@ public class HouseholdActivity extends ListActivity {
                 UI.ui().refreshUI();
 
                 //ensure that we ourselves are in the list
-                Cluster myCluster = findMyCluster();
+                Cluster myCluster = findMyCluster(household);
                 if(myCluster == null){
-                    myCluster = new ClusterImpl(UUID.randomUUID(), "You", new ArrayList<ClusterAlarm>(), new ArrayList<Device>(){{
-                        new DeviceImpl(self.deviceId, new ArrayList<SystemAlarm>());
-                    }});
-                    self.household.getClusters().add(0, myCluster);
-                    hdb.updateHousehold(self.household);
+                    myCluster = new ClusterImpl(UUID.randomUUID(), "You", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
+                    myCluster.getDevices().add(new DeviceImpl(self.deviceId, new ArrayList<SystemAlarm>()));
+                    household.getClusters().add(myCluster);
+                    hdb.updateHousehold(household);
                 }
             }
         };

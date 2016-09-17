@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 //        DatabaseReference myRef = database.getReference("message");
 //        myRef.setValue("Hello, World 2");
 
+        this.getPreferences(Context.MODE_PRIVATE).edit().clear().commit();
 
         setContentView(R.layout.activity_main);
     }
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         String householdId = this.getPreferences(Context.MODE_PRIVATE).getString(getString(R.string.household_id), null);
         if(householdId != null){
-//            goToHousehold(householdId, false);
+            goToHousehold(householdId, false);
         }
     }
 

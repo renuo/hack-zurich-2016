@@ -27,7 +27,7 @@ public class HouseholdDatabaseImpl implements HouseholdDatabase {
 
     @Override
     public void listenForUpdates(final SuccessValueEventListener<Household> listener) {
-        householdDb.addListenerForSingleValueEvent(new ValueEventListener() {
+        householdDb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Object dataSnapshotValue = dataSnapshot.getValue();
