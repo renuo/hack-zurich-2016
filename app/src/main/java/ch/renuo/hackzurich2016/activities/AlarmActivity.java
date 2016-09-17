@@ -3,20 +3,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.UUID;
 
-import ch.renuo.hackzurich2016.MainActivity;
 import ch.renuo.hackzurich2016.R;
 import ch.renuo.hackzurich2016.alarms.AlarmScheduler;
 import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
@@ -25,7 +22,6 @@ import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
 import ch.renuo.hackzurich2016.data.HouseholdQuery;
 import ch.renuo.hackzurich2016.data.SuccessValueEventListener;
 import ch.renuo.hackzurich2016.helpers.PrefsHelper;
-import ch.renuo.hackzurich2016.models.Cluster;
 import ch.renuo.hackzurich2016.models.ClusterAlarm;
 import ch.renuo.hackzurich2016.models.Household;
 
