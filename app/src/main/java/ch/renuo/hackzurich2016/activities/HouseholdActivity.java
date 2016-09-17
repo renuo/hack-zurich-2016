@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,7 +34,9 @@ import com.firebase.ui.auth.ui.AcquireEmailHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -237,6 +242,8 @@ public class HouseholdActivity extends AppCompatActivity {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final Cluster cluster = clusters.get(position);
             View rowView = inflater.inflate(R.layout.list_row, parent, false);
+            ImageView imageView = (ImageView)rowView.findViewById(R.id.clusterImage);
+            setClusterImage(cluster, imageView);
             ((TextView)rowView.findViewById(R.id.clusterName)).setText(cluster.getName());
             ((TextView)rowView.findViewById(R.id.clusterName)).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -337,6 +344,38 @@ public class HouseholdActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    private void setClusterImage(Cluster cluster, final ImageView imageView) {
+        if(cluster == null)
+            return;
+        String imageUrl = null;
+        for (Device device : cluster.getDevices()) {
+            if(device.getImageUrl() != null && device.getImageUrl().length() > 0){
+                imageUrl = device.getImageUrl();
+                break;
+            }
+        }
+        if(imageUrl == null)
+            return;
+        final String finalImageUrl = imageUrl;
+        new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        URL url = new URL(finalImageUrl);
+                        final Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                imageView.setImageBitmap(bmp);
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
     }
 
     private Cluster findClusterById(String id){
