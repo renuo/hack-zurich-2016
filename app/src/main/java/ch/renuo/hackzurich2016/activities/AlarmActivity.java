@@ -24,6 +24,7 @@ import ch.renuo.hackzurich2016.data.HouseholdDatabase;
 import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
 import ch.renuo.hackzurich2016.data.HouseholdQuery;
 import ch.renuo.hackzurich2016.data.SuccessValueEventListener;
+import ch.renuo.hackzurich2016.helpers.PrefsHelper;
 import ch.renuo.hackzurich2016.models.Cluster;
 import ch.renuo.hackzurich2016.models.ClusterAlarm;
 import ch.renuo.hackzurich2016.models.Household;
@@ -32,37 +33,43 @@ public class AlarmActivity extends AppCompatActivity {
 
     private Ringtone ringtone;
     private HouseholdDatabase _db;
-    private ClusterAlarm _alarm;
-    private String _alarmId;
-    private AlarmActivity self;
+    private ClusterAlarm _currentAlarm;
+    private String _currentAlarmId;
     private Household _household;
-    private String _householdId;
+    public PrefsHelper prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.self = this;
-        this._alarmId = getIntent().getStringExtra(AlarmScheduler.ALARM_UUID_TAG);
+        this._currentAlarmId = getIntent().getStringExtra(AlarmScheduler.ALARM_UUID_TAG);
 
-        SharedPreferences prefs = this.getSharedPreferences(MainActivity.PREFKEY, Context.MODE_PRIVATE);
-        this._householdId = this.getSharedPreferences(MainActivity.PREFKEY, Context.MODE_PRIVATE).getString(getString(R.string.household_id), null);
+        initializePrefs();
+        initializeDatabase();
+        initializeRingtone();
+        initializeReceiver();
 
-        initializeDatabase(_householdId);
+        setContentView(R.layout.activity_alarm);
+    }
 
+    private void initializeReceiver() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
+                new IntentFilter(SystemAlarmService.STOP_ALARM_EVENT));
+    }
+
+    private void initializeRingtone() {
         Uri alarmNotification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         this.ringtone = RingtoneManager.getRingtone(this, alarmNotification);
         this.ringtone.play();
+    }
 
-        setContentView(R.layout.activity_alarm);
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
-                new IntentFilter(SystemAlarmService.STOP_ALARM_EVENT));
+    private void initializePrefs() {
+       this.prefs = new PrefsHelper(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        ((TextView)findViewById(R.id.alarmUUIDTextView)).setText(_alarmId.toString());
+        ((TextView)findViewById(R.id.alarmUUIDTextView)).setText(_currentAlarmId);
     }
 
     @Override
@@ -84,48 +91,34 @@ public class AlarmActivity extends AppCompatActivity {
     }
 
     private void stopAlarm() {
-        if(_alarm != null && _household != null) {
-            _alarm.setActive(false);
-            this._alarm = null;
+        if(_currentAlarm != null && _household != null) {
+            _currentAlarm.setActive(false);
+            this._currentAlarm = null;
             _db.updateHousehold(_household);
         }
 
         finish();
     }
 
-    public void setAlarm(ClusterAlarm alarm) {
-        this._alarm = alarm;
-    }
-
-    public String getAlarmId() {
-        return this._alarmId;
-    }
-
-    public void setHousehold(Household household) {
-        this._household = household;
-    }
-
-    private void initializeDatabase(String householdId) {
-        this._db = new HouseholdDatabaseImpl(UUID.fromString(householdId));
-        SuccessValueEventListener<Household> listener = new SuccessValueEventListener<Household>() {
+    private void initializeDatabase() {
+        this._db = new HouseholdDatabaseImpl(UUID.fromString(prefs.getHouseholdId()));
+        _db.listenForUpdates(new SuccessValueEventListener<Household>() {
 
             @Override
             protected void onChange(Household household) {
                 if(household == null){
-                    self.finish();
+                    finish();
                     return;
                 }
 
-                self.setHousehold(household);
-
-                Pair<Cluster, ClusterAlarm> alarmPair = new HouseholdQuery(household).findAlarmById(self.getAlarmId());
+                Pair<Cluster, ClusterAlarm> alarmPair = new HouseholdQuery(household).findAlarmById(_currentAlarmId);
                 if (alarmPair == null || !alarmPair.second.getActive()) {
-                    self.stopAlarm();
+                    stopAlarm();
                 } else {
-                    self.setAlarm(alarmPair.second);
+                    _household = household;
+                   _currentAlarm = alarmPair.second;
                 }
             }
-        };
-        _db.listenForUpdates(listener);
+        });
     }
 }

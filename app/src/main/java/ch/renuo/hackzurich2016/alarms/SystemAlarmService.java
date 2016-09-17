@@ -65,9 +65,6 @@ public class SystemAlarmService extends Service {
         this.prefs = new PrefsHelper(this);
     }
 
-    public void initialize() {
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return START_STICKY;
