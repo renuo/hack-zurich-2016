@@ -8,7 +8,5 @@ public interface Device {
 
     String getImageUrl();
 
-    List<SystemAlarm> getSystemAlarms();
-
     void setImageUrl(String imageUrl);
 }

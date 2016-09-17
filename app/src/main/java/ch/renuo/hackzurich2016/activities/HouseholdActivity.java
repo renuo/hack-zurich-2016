@@ -279,7 +279,7 @@ public class HouseholdActivity extends AppCompatActivity {
                     myCluster = new ClusterImpl(UUID.randomUUID(), "You", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
                     // TODO: add image url from file
                     String imageUrl = null;
-                    myCluster.getDevices().add(new DeviceImpl(self.deviceId, imageUrl, new ArrayList<SystemAlarm>()));
+                    myCluster.getDevices().add(new DeviceImpl(self.deviceId, imageUrl));
                     household.getClusters().add(myCluster);
                     hdb.updateHousehold(household);
                     setUser();
@@ -496,7 +496,7 @@ public class HouseholdActivity extends AppCompatActivity {
 
                 if(alarmNew) {
                     Cluster cluster = findClusterById(clusterId);
-                    ClusterAlarm alarm = new ClusterAlarmImpl(UUID.randomUUID(), alarmTime, alarmActive, new ArrayList<SystemAlarm>());
+                    ClusterAlarm alarm = new ClusterAlarmImpl(UUID.randomUUID(), alarmTime, alarmActive);
                     cluster.getClusterAlarms().add(alarm);
                     hdb.updateHousehold(self.household);
                     Log.e("n", "newalarm");

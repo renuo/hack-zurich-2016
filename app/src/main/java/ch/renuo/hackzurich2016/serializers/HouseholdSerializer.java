@@ -27,7 +27,6 @@ public class HouseholdSerializer {
         map.put("clusters", getClusters());
         map.put("devices", getDevices());
         map.put("clusterAlarms", getClusterAlarms());
-        map.put("systemAlarms", getSystemAlarms());
         return map;
     }
 
@@ -89,17 +88,6 @@ public class HouseholdSerializer {
         map.put("imageUrl", device.getImageUrl());
         map.put("clusterId", clusterId.toString());
         return map;
-    }
-
-    @NonNull
-    private List<Object> getSystemAlarms() {
-        List<Object> systemAlarms = new ArrayList<>();
-        for (Cluster cluster : household.getClusters())
-            for (ClusterAlarm clusterAlarm : cluster.getClusterAlarms())
-                for (SystemAlarm systemAlarm : clusterAlarm.getSystemAlarms())
-                    systemAlarms.add(getSystemAlarm(cluster.getId(), clusterAlarm.getId(), systemAlarm));
-
-        return systemAlarms;
     }
 
     @NonNull

@@ -14,6 +14,4 @@ public interface ClusterAlarm {
     void setActive(boolean active);
 
     Calendar getTimeAsCalendar();
-
-    List<SystemAlarm> getSystemAlarms();
 }

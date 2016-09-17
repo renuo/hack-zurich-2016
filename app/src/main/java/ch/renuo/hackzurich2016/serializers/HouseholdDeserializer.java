@@ -28,7 +28,6 @@ public class HouseholdDeserializer {
         deserializeClusters();
         deserializeDevices();
         deserializeClusterAlarms();
-        deserializeSystemAlarms();
 
         return new HouseholdImpl(getUuid(this.serialized.get("id")), clusters);
     }
@@ -61,7 +60,7 @@ public class HouseholdDeserializer {
     private Device getDevice(Map<String, Object> serializedDevice) {
         UUID id = getUuid(serializedDevice.get("id"));
         String imageUrl = (String) serializedDevice.get("imageUrl");
-        return new DeviceImpl(id, imageUrl, new ArrayList<SystemAlarm>());
+        return new DeviceImpl(id, imageUrl);
     }
 
     private void addDeviceToCluster(Device device, UUID clusterId) {
@@ -90,26 +89,7 @@ public class HouseholdDeserializer {
         UUID id = getUuid(serializedClusterAlarm.get("id"));
         String time = (String) serializedClusterAlarm.get("time");
         boolean active = (boolean) serializedClusterAlarm.get("active");
-        return new ClusterAlarmImpl(id, time, active, new ArrayList<SystemAlarm>());
-    }
-
-    private void deserializeSystemAlarms() {
-        List<Map<String, Object>> serializedSystemAlarms = (List<Map<String, Object>>) this.serialized.get("systemAlarms");
-        if (serializedSystemAlarms == null) return;
-
-        for (Map<String, Object> serializedSystemAlarm : serializedSystemAlarms)
-            addSystemAlarmToClusterAlarm(
-                    getSystemAlarm(serializedSystemAlarm),
-                    getUuid(serializedSystemAlarm.get("clusterId")),
-                    getUuid(serializedSystemAlarm.get("clusterAlarmId")));
-    }
-
-    private void addSystemAlarmToClusterAlarm(SystemAlarm systemAlarm, UUID clusterId, UUID clusterAlarmId) {
-        for (Cluster cluster : clusters)
-            if (cluster.getId().equals(clusterId))
-                for (ClusterAlarm clusterAlarm : cluster.getClusterAlarms())
-                    if (clusterAlarm.getId().equals(clusterAlarmId))
-                        clusterAlarm.getSystemAlarms().add(systemAlarm);
+        return new ClusterAlarmImpl(id, time, active);
     }
 
     private SystemAlarm getSystemAlarm(Map<String, Object> serializedSystemAlarm) {

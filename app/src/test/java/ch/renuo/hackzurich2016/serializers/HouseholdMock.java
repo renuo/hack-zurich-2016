@@ -20,18 +20,13 @@ import ch.renuo.hackzurich2016.models.SystemAlarmImpl;
 public class HouseholdMock {
     @NonNull
     public static Household getHousehold() {
-        SystemAlarm systemAlarm = new SystemAlarmImpl(UUID.randomUUID(), "time", true);
-
-        List<SystemAlarm> systemAlarms = new ArrayList<>();
-        systemAlarms.add(systemAlarm);
-
-        ClusterAlarm clusterAlarm = new ClusterAlarmImpl(UUID.randomUUID(), "time", true, systemAlarms);
+        ClusterAlarm clusterAlarm = new ClusterAlarmImpl(UUID.randomUUID(), "time", true);
 
         List<ClusterAlarm> clusterAlarms = new ArrayList<>();
         clusterAlarms.add(clusterAlarm);
 
         String imageUrl = "";
-        Device device = new DeviceImpl(UUID.randomUUID(), imageUrl, systemAlarms);
+        Device device = new DeviceImpl(UUID.randomUUID(), imageUrl);
 
         List<Device> devices = new ArrayList<>();
         devices.add(device);
