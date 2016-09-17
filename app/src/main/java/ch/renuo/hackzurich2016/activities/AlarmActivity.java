@@ -17,10 +17,6 @@ public class AlarmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Uri alarmNotification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), alarmNotification);
-        r.play();
-
         setContentView(R.layout.activity_alarm);
     }
 
@@ -29,7 +25,8 @@ public class AlarmActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Log.d("AlarmActivity", "onResume");
+        Uri alarmNotification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        RingtoneManager.getRingtone(getApplicationContext(), alarmNotification).play();
 
         String alarmUUID = getIntent().getStringExtra(AlarmController.ALARM_UUID_TAG);
         ((TextView)findViewById(R.id.alarmUUIDTextView)).setText(alarmUUID);
