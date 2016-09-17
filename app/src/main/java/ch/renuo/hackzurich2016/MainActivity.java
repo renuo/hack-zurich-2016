@@ -60,12 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public void onCreateHouseholdClick(View view){
         String householdId = UUID.randomUUID().toString();
         this.getPreferences(Context.MODE_PRIVATE).edit().putString(getString(R.string.household_id), householdId).commit();
-<<<<<<< HEAD
-        goToHousehold(householdId);
-
-=======
         goToHousehold(householdId, true);
->>>>>>> 9da4199062852883d70e463640a093f3d9afaf8b
     }
 
     //http://stackoverflow.com/questions/8831050/android-how-to-read-qr-code-in-my-application
