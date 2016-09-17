@@ -6,13 +6,31 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 import ch.renuo.hackzurich2016.helpers.AlarmTimeHelper;
 import ch.renuo.hackzurich2016.models.SystemAlarm;
+import ch.renuo.hackzurich2016.models.SystemAlarmImpl;
 
 public class AlarmController {
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void setNextAlarm(Context context) {
+        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+        Log.i("AlarmController", "Setting alarm!");
+        SystemAlarm nextAlarm = new SystemAlarmImpl(UUID.randomUUID(), "13:23", true);
+        long alarmTime = new AlarmTimeHelper().alarmTime(nextAlarm).getTimeInMillis();
+
+        AlarmManager.AlarmClockInfo info =
+                new AlarmManager.AlarmClockInfo(alarmTime, alarmIntent);
+        alarmManager.setAlarmClock(info, alarmIntent);
+    }
 //
 //    private static final String INDICATOR_ACTION = "indicator";
 //
