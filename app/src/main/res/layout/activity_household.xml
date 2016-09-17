@@ -39,7 +39,7 @@
             android:layout_marginTop="-120px"
             android:backgroundTint="@color/colorPrimary"
             android:onClick="addMemberButtonClicked"
-            android:text="Add New Member" />
+            android:text="Invite Member to Household" />
 
     </LinearLayout>
 </RelativeLayout>

@@ -18,8 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:backgroundTintMode="add"
-        android:paddingRight="-30px"
+        android:backgroundTint="@color/zxing_transparent"
+        android:paddingRight="-40px"
         android:src="@android:drawable/btn_plus" />
 
     <android.support.v7.widget.RecyclerView
