@@ -58,8 +58,11 @@ public class HouseholdDatabaseMock {
         return null;
     }
 
-    public void saveCluster(Cluster cluster){
-
+    public void saveCluster(Household household, Cluster cluster){
+        if(household.getClusters().indexOf(cluster) < 0){
+            household.getClusters().add(cluster);
+        }
+        UI.ui().refreshUI();
     }
 
     // Devices

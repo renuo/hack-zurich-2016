@@ -1,7 +1,9 @@
 package ch.renuo.hackzurich2016.activities;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextClock;
@@ -108,6 +111,31 @@ public class HouseholdActivity extends ListActivity {
             final Cluster cluster = clusters.get(position);
             View rowView = inflater.inflate(R.layout.list_row, parent, false);
             ((TextView)rowView.findViewById(R.id.clusterName)).setText(cluster.getName());
+            ((TextView)rowView.findViewById(R.id.clusterName)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final EditText input = new EditText(self);
+                    new AlertDialog.Builder(self).setTitle("Change Name").setView(input).setPositiveButton(
+                            "OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String result = input.getText().toString();
+                                    if(result != null && result.length() > 0) {
+                                        cluster.setName(result);
+                                        hdb.saveCluster(hdb.getHousehold(), cluster);
+                                    }
+                                }
+                            }
+                    ).setNegativeButton(
+                            "Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            }
+                    ).show();
+                }
+            });
             ((ImageButton)rowView.findViewById(R.id.addAlarmButton)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
