@@ -21,6 +21,7 @@
         <activity android:name=".activities.HouseholdActivity" />
         <activity android:name=".activities.EditAlarmActivity"></activity>
         <activity android:name=".activities.AlarmActivity"></activity>
+        <activity android:name=".activities.BarcodeActivity"></activity>
     </application>
 
 </manifest>

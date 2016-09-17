@@ -32,12 +32,12 @@ public class HouseholdDatabaseMock {
         this.household = new HouseholdImpl(UUID.randomUUID(), new ArrayList<Cluster>());
         Cluster cluster1 = new ClusterImpl(UUID.randomUUID(), "Cluster1", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
         this.household.getClusters().add(cluster1);
-        ClusterAlarm c1a1 = new ClusterAlarmImpl(UUID.randomUUID(), "12:33", true, new ArrayList<SystemAlarm>());
+        ClusterAlarm c1a1 = new ClusterAlarmImpl(UUID.randomUUID(), "12:33", false, new ArrayList<SystemAlarm>());
         cluster1.getClusterAlarms().add(c1a1);
         ClusterAlarm c1a2 = new ClusterAlarmImpl(UUID.randomUUID(), "14:55", true, new ArrayList<SystemAlarm>());
         cluster1.getClusterAlarms().add(c1a2);
         for(int i=0;i<10;i++) {
-            cluster1.getClusterAlarms().add(new ClusterAlarmImpl(UUID.randomUUID(), "12:32", true, new ArrayList<SystemAlarm>()));
+            cluster1.getClusterAlarms().add(new ClusterAlarmImpl(UUID.randomUUID(), "12:32", false, new ArrayList<SystemAlarm>()));
         }
         Cluster cluster2 = new ClusterImpl(UUID.randomUUID(), "Cluster2", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
         this.household.getClusters().add(cluster2);
@@ -58,8 +58,11 @@ public class HouseholdDatabaseMock {
         return null;
     }
 
-    public void saveCluster(Cluster cluster){
-
+    public void saveCluster(Household household, Cluster cluster){
+        if(household.getClusters().indexOf(cluster) < 0){
+            household.getClusters().add(cluster);
+        }
+        UI.ui().refreshUI();
     }
 
     // Devices
@@ -68,14 +71,19 @@ public class HouseholdDatabaseMock {
     }
 
     // Cluster Alarms
-    public void saveClusterAlarm(ClusterAlarm alarm){
+    public void saveClusterAlarm(Cluster cluster, ClusterAlarm alarm){
         Log.e("e", "saving alarm");
+        int a = cluster.getClusterAlarms().indexOf(alarm);
+        if(a < 0){
+            cluster.getClusterAlarms().add(alarm);
+        }
         UI.ui().refreshUI();
     }
     public void snoozeClusterAlarm(ClusterAlarm alarm){
 
     }
-    public void deleteClusterAlarm(ClusterAlarm alarm){
+
+    public void deleteClusterAlarm(Cluster cluster, ClusterAlarm alarm){
 
     }
 
