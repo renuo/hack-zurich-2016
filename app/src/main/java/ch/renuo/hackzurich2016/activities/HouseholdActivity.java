@@ -31,6 +31,11 @@ import android.widget.ListView;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ui.AcquireEmailHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -360,9 +365,18 @@ public class HouseholdActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+        if(menu.size() > 0) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            menu.getItem(1).setVisible(user == null);
+            menu.getItem(2).setVisible(user != null);
+        }
+
         return true;
     }
 
@@ -377,6 +391,25 @@ public class HouseholdActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(self, MainActivity.class));
             return true;
+        }
+
+        else if (id == R.id.action_login){
+            Log.e("a", "login");
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            startActivityForResult(
+                    AuthUI.getInstance().createSignInIntentBuilder()
+                            .setProviders(
+                                    AuthUI.EMAIL_PROVIDER,
+                                    AuthUI.GOOGLE_PROVIDER,
+                                    AuthUI.FACEBOOK_PROVIDER)
+                            .build(),
+                    AcquireEmailHelper.RC_SIGN_IN);
+        }
+
+        else if (id == R.id.action_logout){
+            Log.e("a", "logout");
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            auth.signOut();
         }
 
         return super.onOptionsItemSelected(item);
