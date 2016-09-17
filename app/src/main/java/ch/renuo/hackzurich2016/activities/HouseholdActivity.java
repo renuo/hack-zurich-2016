@@ -52,7 +52,7 @@ import ch.renuo.hackzurich2016.models.Household;
 import ch.renuo.hackzurich2016.models.HouseholdImpl;
 import ch.renuo.hackzurich2016.models.SystemAlarm;
 
-public class HouseholdActivity extends ListActivity {
+public class HouseholdActivity extends AppCompatActivity {
 
     public static final int EDIT_ALARM_REQUEST = 1;
 
@@ -79,7 +79,7 @@ public class HouseholdActivity extends ListActivity {
             }
         });
         final ClusterListAdapter adapter = new ClusterListAdapter(this, clusters);
-        this.setListAdapter(adapter);
+        ((ListView)findViewById(R.id.clusterList)).setAdapter(adapter);
         Log.e("r", "redraw");
     }
 
@@ -101,7 +101,7 @@ public class HouseholdActivity extends ListActivity {
                     @Override
                     public void run() {
 //                        getListView().invalidateViews();
-                        ClusterListAdapter adapter = ((ClusterListAdapter)self.getListAdapter());
+                        ClusterListAdapter adapter = ((ClusterListAdapter)((ListView)self.findViewById(R.id.clusterList)).getAdapter());
                         if(adapter != null) {
                             adapter.notifyDataSetChanged();
                         }

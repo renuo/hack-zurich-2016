@@ -24,7 +24,7 @@
         android:paddingTop="@dimen/activity_vertical_margin">
 
         <ListView
-            android:id="@android:id/list"
+            android:id="@+id/clusterList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="130px"
