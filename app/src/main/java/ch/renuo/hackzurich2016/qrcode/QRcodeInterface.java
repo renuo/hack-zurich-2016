@@ -11,7 +11,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import ch.renuo.hackzurich2016.models.Household;
 
 public class QRcodeInterface {
-    public static final int QRCODE_DIMENSION = 300;
+    public static final int QRCODE_DIMENSION = 600;
 
     public static Bitmap generateBitmap(String householdId) throws Exception {
         BitMatrix matrix = generateBitMatrix(householdId);

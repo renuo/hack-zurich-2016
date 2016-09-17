@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -254,10 +255,10 @@ public class HouseholdActivity extends ListActivity {
                     }
                 });
                 tc.setText(alarm.getTime());
-                if(alarm.getActive()) {
-                    tc.setBackgroundColor(Color.parseColor("red"));
-                }else{
-                    tc.setBackgroundColor(Color.parseColor("white"));
+                if (alarm.getActive()) {
+                    tc.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
+                } else {
+                    tc.setBackgroundColor(ContextCompat.getColor(context, R.color.colorSecondary));
                 }
             }
 

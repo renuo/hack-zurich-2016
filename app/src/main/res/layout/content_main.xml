@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/create_group"
                 android:onClick="onCreateHouseholdClick"
-                android:backgroundTint="#fefaa3" />
+                android:backgroundTint="@color/colorSecondary" />
         </LinearLayout>
 
         <LinearLayout

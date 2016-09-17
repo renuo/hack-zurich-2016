@@ -18,7 +18,7 @@ public class QRcodeInterfaceTest {
     @Test
     public void testGenerate() throws Exception {
         Household household = new HouseholdImpl(UUID.randomUUID(), null);
-        BitMatrix bitMatrix = QRcodeInterface.generateBitMatrix(household);
+        BitMatrix bitMatrix = QRcodeInterface.generateBitMatrix(household.toString());
         assertNotNull(bitMatrix);
     }
 }
