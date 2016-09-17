@@ -3,6 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip">
+
     <ImageView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
@@ -13,12 +14,11 @@
         android:contentDescription="TODO" />
 
     <ImageButton
+        android:id="@+id/addAlarmButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/add"
-        android:id="@+id/addAlarmButton"
         android:layout_alignParentRight="true"
-        />
+        android:src="@drawable/add" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/timerListView"
@@ -27,20 +27,19 @@
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/addAlarmButton"
         android:layout_toRightOf="@id/icon"
-        android:scrollbars="horizontal">
-    </android.support.v7.widget.RecyclerView>
+        android:scrollbars="horizontal"></android.support.v7.widget.RecyclerView>
 
     <TextView
         android:id="@+id/clusterName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/addAlarmButton"
-        android:layout_alignParentTop="true"
         android:layout_above="@id/timerListView"
+        android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
+        android:layout_toLeftOf="@id/addAlarmButton"
         android:layout_toRightOf="@id/icon"
         android:gravity="center_vertical"
-        android:text="[name missing]"
+        android:text="Row Name"
         android:textSize="16sp" />
 
 
