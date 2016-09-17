@@ -31,16 +31,21 @@ public class SystemAlarmService extends Service {
     private SystemAlarmService self;
     private String _householdId;
     private String _deviceId;
+    private HouseholdDatabase _db;
+    private AlarmScheduler _scheduler;
 
     @Override
     public void onCreate() {
-        initializePrefs();
         this.self = this;
-        initializeDatabase(_householdId);
+        initialize();
     }
 
-    private HouseholdDatabase initializeDatabase(String householdId) {
-        HouseholdDatabase db = new HouseholdDatabaseImpl(UUID.fromString(householdId));
+    private void initializeScheduler() {
+        this._scheduler = new AlarmScheduler(getApplicationContext());
+    }
+
+    private void initializeDatabase(String householdId) {
+        this._db = new HouseholdDatabaseImpl(UUID.fromString(householdId));
         SuccessValueEventListener<Household> listener = new SuccessValueEventListener<Household>() {
 
             @Override
@@ -54,8 +59,13 @@ public class SystemAlarmService extends Service {
                 ClusterAlarm nextAlarm = new HouseholdQuery(household).getNextClusterAlarm(self._deviceId);
                 String nextAlarmTimeString = nextAlarm == null ? "-" : nextAlarm.getTime();
 
-                Toast.makeText(self, "Updaaate!! Next Alarm: " + nextAlarmTimeString, Toast.LENGTH_SHORT).show();
-                Log.d("Service", "There is an update!!");
+                if(nextAlarm == null) {
+                    cancelAlarm();
+                } else {
+                    scheduleAlarm(nextAlarm);
+                }
+
+                Toast.makeText(self, "Updaaate!!", Toast.LENGTH_SHORT).show();
 
 //                Cluster myCluster = findMyCluster(household);
 //                if(myCluster == null){
@@ -68,14 +78,19 @@ public class SystemAlarmService extends Service {
 //                }
             }
         };
-        db.listenForUpdates(listener);
-        return db;
+        _db.listenForUpdates(listener);
     }
 
     private void initializePrefs() {
         SharedPreferences prefs = this.getSharedPreferences(MainActivity.PREFKEY, Context.MODE_PRIVATE);
         this._householdId = this.getSharedPreferences(MainActivity.PREFKEY, Context.MODE_PRIVATE).getString(getString(R.string.household_id), null);
         this._deviceId = prefs.getString(getString(R.string.device_id), null);
+    }
+
+    public void initialize() {
+        initializePrefs();
+        initializeDatabase(_householdId);
+        initializeScheduler();
     }
 
     @Override
@@ -87,5 +102,15 @@ public class SystemAlarmService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    private void scheduleAlarm(ClusterAlarm alarm) {
+        Toast.makeText(self, "Scheduling Alarm: " + alarm.getTime(), Toast.LENGTH_SHORT).show();
+        _scheduler.scheduleStartAlarm(alarm.getTimeAsCalendar(), alarm.getId().toString());
+    }
+
+    private void cancelAlarm() {
+        Toast.makeText(self, "Canceling Alarm", Toast.LENGTH_SHORT).show();
+        _scheduler.cancelStartAlarm("");
     }
 }

@@ -29,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
 //        myRef.setValue("Hello, World 2");
 //        this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE).edit().clear().commit();
 
-        // Connect this to db
-        new AlarmController(this).onUpdate();
-
         Intent service = new Intent(this, SystemAlarmService.class);
         startService(service);
 
