@@ -138,7 +138,7 @@ public class HouseholdActivity extends ListActivity {
                     @Override
                     public boolean onLongClick(View v) {
                         Intent intent = new Intent(self, EditAlarmActivity.class);
-                        intent.putExtra(getString(R.string.alarm_id), alarm.getId());
+                        intent.putExtra(getString(R.string.alarm_id), alarm.getId().toString());
                         intent.putExtra(getString(R.string.alarm_time), alarm.getTime());
                         intent.putExtra(getString(R.string.alarm_active), alarm.getActive());
                         intent.putExtra(getString(R.string.alarm_new), false);
@@ -165,7 +165,7 @@ public class HouseholdActivity extends ListActivity {
     private ClusterAlarm findAlarmById(String id){
         for (Cluster cluster : this.hdb.getHousehold().getClusters()) {
             for (ClusterAlarm alarm : cluster.getClusterAlarms()) {
-                if(alarm.getId().equals(id)){
+                if(alarm.getId().toString().equals(id)){
                     return alarm;
                 }
             }

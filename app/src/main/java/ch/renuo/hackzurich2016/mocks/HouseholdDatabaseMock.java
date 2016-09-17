@@ -14,6 +14,7 @@ import ch.renuo.hackzurich2016.models.ClusterImpl;
 import ch.renuo.hackzurich2016.models.Device;
 import ch.renuo.hackzurich2016.models.Household;
 import ch.renuo.hackzurich2016.models.HouseholdImpl;
+import ch.renuo.hackzurich2016.models.SystemAlarm;
 
 /**
  * Created by yk on 17/09/16.
@@ -29,25 +30,18 @@ public class HouseholdDatabaseMock {
     public HouseholdDatabaseMock(String householdId){
         this.householdId = householdId;
         this.household = new HouseholdImpl(UUID.randomUUID(), new ArrayList<Cluster>());
-        Cluster cluster1 = new ClusterImpl(this.household, "Cluster1", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
+        Cluster cluster1 = new ClusterImpl(UUID.randomUUID(), "Cluster1", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
         this.household.getClusters().add(cluster1);
-        ClusterAlarm c1a1 = new ClusterAlarmImpl(cluster1, "12:33", true);
+        ClusterAlarm c1a1 = new ClusterAlarmImpl(UUID.randomUUID(), "12:33", true, new ArrayList<SystemAlarm>());
         cluster1.getClusterAlarms().add(c1a1);
-        ClusterAlarm c1a2 = new ClusterAlarmImpl(cluster1, "14:55", true);
+        ClusterAlarm c1a2 = new ClusterAlarmImpl(UUID.randomUUID(), "14:55", true, new ArrayList<SystemAlarm>());
         cluster1.getClusterAlarms().add(c1a2);
-        cluster1.getClusterAlarms().add(new ClusterAlarmImpl(cluster1, "12:32", true));
-        cluster1.getClusterAlarms().add(new ClusterAlarmImpl(cluster1, "12:32", true));
-        cluster1.getClusterAlarms().add(new ClusterAlarmImpl(cluster1, "12:32", true));
-        cluster1.getClusterAlarms().add(new ClusterAlarmImpl(cluster1, "12:32", false));
-        cluster1.getClusterAlarms().add(new ClusterAlarmImpl(cluster1, "12:32", true));
-        cluster1.getClusterAlarms().add(new ClusterAlarmImpl(cluster1, "12:32", false));
-        cluster1.getClusterAlarms().add(new ClusterAlarmImpl(cluster1, "12:32", false));
-        cluster1.getClusterAlarms().add(new ClusterAlarmImpl(cluster1, "12:32", false));
-        cluster1.getClusterAlarms().add(new ClusterAlarmImpl(cluster1, "12:32", true));
-        cluster1.getClusterAlarms().add(new ClusterAlarmImpl(cluster1, "12:32", true));
-        Cluster cluster2 = new ClusterImpl(this.household, "Cluster2", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
+        for(int i=0;i<10;i++) {
+            cluster1.getClusterAlarms().add(new ClusterAlarmImpl(UUID.randomUUID(), "12:32", true, new ArrayList<SystemAlarm>()));
+        }
+        Cluster cluster2 = new ClusterImpl(UUID.randomUUID(), "Cluster2", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
         this.household.getClusters().add(cluster2);
-        ClusterAlarm c2a1 = new ClusterAlarmImpl(cluster2, "08:00", true);
+        ClusterAlarm c2a1 = new ClusterAlarmImpl(UUID.randomUUID(), "08:00", true, new ArrayList<SystemAlarm>());
         cluster2.getClusterAlarms().add(c2a1);
     }
 
