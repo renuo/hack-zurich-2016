@@ -18,7 +18,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@drawable/add" />
+        android:backgroundTintMode="add"
+        android:paddingRight="-30px"
+        android:src="@android:drawable/btn_plus" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/timerListView"
