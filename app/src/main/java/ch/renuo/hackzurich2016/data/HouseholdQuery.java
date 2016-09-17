@@ -1,16 +1,10 @@
 package ch.renuo.hackzurich2016.data;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
-import ch.renuo.hackzurich2016.helpers.AlarmTimeHelper;
 import ch.renuo.hackzurich2016.models.Cluster;
 import ch.renuo.hackzurich2016.models.ClusterAlarm;
 import ch.renuo.hackzurich2016.models.Device;
