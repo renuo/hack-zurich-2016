@@ -29,7 +29,7 @@
                 android:id="@+id/createHouseholdButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onCreateHouseholdClick"
+                android:onClick="onJoinHouseholdClick"
                 android:text="@string/create_group" />
         </LinearLayout>
 

@@ -4,10 +4,12 @@
     <string name="preference_key_file">com.renuo.hackzurich2016.settings</string>
     <string name="device_id">com.renuo.hackzurich2016.device_id</string>
     <string name="household_id">com.renuo.hackzurich2016.household_id</string>
+    <string name="cluster_id">com.renuo.hackzurich2016.cluster_id</string>
     <string name="alarm_id">com.renuo.hackzurich2016.alarm_id</string>
     <string name="alarm_time">com.renuo.hackzurich2016.alarm_time</string>
     <string name="alarm_active">com.renuo.hackzurich2016.alarm_active</string>
     <string name="alarm_new">com.renuo.hackzurich2016.alarm_new</string>
     <string name="join_group">Join Existing Household</string>
     <string name="create_group">Register New Household</string>
+    <string name="title_activity_barcode">BarcodeActivity</string>
 </resources>

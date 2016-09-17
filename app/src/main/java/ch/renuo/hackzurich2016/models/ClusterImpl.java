@@ -27,6 +27,12 @@ public class ClusterImpl implements Cluster {
     }
 
     @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    @Override
     public List<ClusterAlarm> getClusterAlarms() {
         return clusterAlarms;
     }

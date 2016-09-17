@@ -11,6 +11,7 @@ import ch.renuo.hackzurich2016.R;
 
 public class EditAlarmActivity extends AppCompatActivity {
 
+    private String clusterId;
     private String alarmId;
     private String alarmTime;
     private boolean alarmActive;
@@ -22,6 +23,7 @@ public class EditAlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_alarm);
 
         Intent intent = getIntent();
+        this.clusterId = intent.getStringExtra(getString(R.string.cluster_id));
         this.alarmId = intent.getStringExtra(getString(R.string.alarm_id));
         this.alarmTime = intent.getStringExtra(getString(R.string.alarm_time));
         this.alarmActive = intent.getBooleanExtra(getString(R.string.alarm_active), false);
@@ -32,18 +34,19 @@ public class EditAlarmActivity extends AppCompatActivity {
         int minute = Integer.valueOf(timeSplits[1]);
 
         ((TimePicker)findViewById(R.id.timePicker)).setIs24HourView(true);
-        ((TimePicker)findViewById(R.id.timePicker)).setHour(hour);
-        ((TimePicker)findViewById(R.id.timePicker)).setMinute(minute);
+        ((TimePicker)findViewById(R.id.timePicker)).setCurrentHour(hour);
+        ((TimePicker)findViewById(R.id.timePicker)).setCurrentMinute(minute);
         ((Switch)findViewById(R.id.activeSwitch)).setChecked(alarmActive);
     }
 
     private void doResult(int retval){
         this.alarmActive = ((Switch)findViewById(R.id.activeSwitch)).isChecked();
-        int hour = ((TimePicker)findViewById(R.id.timePicker)).getHour();
-        int minute = ((TimePicker)findViewById(R.id.timePicker)).getMinute();
+        int hour = ((TimePicker)findViewById(R.id.timePicker)).getCurrentHour();
+        int minute = ((TimePicker)findViewById(R.id.timePicker)).getCurrentMinute();
         this.alarmTime = String.format("%02d", hour) + ":" + String.format("%02d", minute);
 
         Intent result = new Intent();
+        result.putExtra(getString(R.string.cluster_id), this.clusterId);
         result.putExtra(getString(R.string.alarm_id), this.alarmId);
         result.putExtra(getString(R.string.alarm_time), this.alarmTime);
         result.putExtra(getString(R.string.alarm_active), this.alarmActive);
