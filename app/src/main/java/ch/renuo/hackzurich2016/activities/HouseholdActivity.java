@@ -1,13 +1,21 @@
 package ch.renuo.hackzurich2016.activities;
 
 import android.app.AlertDialog;
+import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -35,6 +43,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -43,7 +52,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import ch.renuo.hackzurich2016.AccountUtils;
 import ch.renuo.hackzurich2016.MainActivity;
+import ch.renuo.hackzurich2016.Manifest;
 import ch.renuo.hackzurich2016.R;
 import ch.renuo.hackzurich2016.UI;
 import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
@@ -125,10 +136,60 @@ public class HouseholdActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                Log.e("a", "auth state changed");
                 self.invalidateOptionsMenu();
                 setUserFromFirebase(firebaseAuth);
             }
         });
+
+    }
+
+    private void setUser(){
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
+            Log.e("p", "permission granted auto");
+            setUserFromLocal();
+        }else {
+            Log.e("p", "asking for permission");
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_CONTACTS}, 45);
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == 45){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.e("p", "permission granted");
+                setUserFromLocal();
+            }
+        }
+    }
+
+    private void setUserFromLocal() {
+        Uri photoUrl = AccountUtils.getUserProfile(this).possiblePhoto();
+        List<String> names = AccountUtils.getUserProfile(this).possibleNames();
+        if(self.household != null) {
+            Device device = findMyDevice(self.household);
+            Cluster cluster = findMyCluster(self.household);
+            if (cluster != null) {
+                if(names != null && names.size() > 0) {
+                    String name = names.get(0);
+                    if (cluster.getName() == null || cluster.getName().equals("You") || cluster.getName().length() == 0) {
+                        cluster.setName(name);
+                        hdb.updateHousehold(self.household);
+                    }
+                }
+                if (photoUrl != null) {
+                    String imageUrl = photoUrl.toString();
+                    if (device.getImageUrl() == null) {
+                        device.setImageUrl(imageUrl);
+                        hdb.updateHousehold(self.household);
+                    }
+                }
+            }
+        }else{
+            Log.e("h", "household null");
+        }
     }
 
     private void setUserFromFirebase(@NonNull FirebaseAuth firebaseAuth) {
@@ -211,15 +272,17 @@ public class HouseholdActivity extends AppCompatActivity {
                 Log.e("e","onchange");
                 UI.ui().refreshUI();
 
+
                 //ensure that we ourselves are in the list
                 Cluster myCluster = findMyCluster(household);
                 if(myCluster == null){
                     myCluster = new ClusterImpl(UUID.randomUUID(), "You", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
                     // TODO: add image url from file
-                    String imageUrl = "";
+                    String imageUrl = null;
                     myCluster.getDevices().add(new DeviceImpl(self.deviceId, imageUrl, new ArrayList<SystemAlarm>()));
                     household.getClusters().add(myCluster);
                     hdb.updateHousehold(household);
+                    setUser();
                 }
             }
         };
@@ -230,6 +293,7 @@ public class HouseholdActivity extends AppCompatActivity {
         }
         return db;
     }
+
 
     private class ClusterListAdapter extends ArrayAdapter<Cluster>{
         private List<Cluster> clusters;
@@ -361,10 +425,17 @@ public class HouseholdActivity extends AppCompatActivity {
                 break;
             }
         }
-        if(imageUrl == null)
+        if(imageUrl == null) {
+            Log.e("i", "no image");
             return;
+        }
         final String finalImageUrl = imageUrl;
-        new Thread(new Runnable() {
+        Log.e("i", finalImageUrl);
+        if(imageUrl.startsWith("content")){
+            imageView.setImageResource(0);
+            imageView.setImageURI(Uri.parse(imageUrl));
+        }else {
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -381,6 +452,7 @@ public class HouseholdActivity extends AppCompatActivity {
                     }
                 }
             }).start();
+        }
     }
 
     private Cluster findClusterById(String id){
@@ -440,6 +512,19 @@ public class HouseholdActivity extends AppCompatActivity {
             }
 
         }
+
+        else if (requestCode== AcquireEmailHelper.RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                Log.e("a", "auth result is not ok");
+                // user is signed in!
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            } else {
+                Log.e("a", "auth result is not ok");
+                // user is not signed in. Maybe just wait for the user to press
+                // "sign in" again, or show a message
+            }
+        }
     }
 
     public void addMemberButtonClicked(View view){
@@ -480,13 +565,11 @@ public class HouseholdActivity extends AppCompatActivity {
 
         else if (id == R.id.action_login){
             Log.e("a", "login");
-            FirebaseAuth auth = FirebaseAuth.getInstance();
             startActivityForResult(
                     AuthUI.getInstance().createSignInIntentBuilder()
                             .setProviders(
                                     AuthUI.EMAIL_PROVIDER,
-                                    AuthUI.GOOGLE_PROVIDER,
-                                    AuthUI.FACEBOOK_PROVIDER)
+                                    AuthUI.GOOGLE_PROVIDER)
                             .build(),
                     AcquireEmailHelper.RC_SIGN_IN);
             return true;
@@ -501,5 +584,7 @@ public class HouseholdActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }
