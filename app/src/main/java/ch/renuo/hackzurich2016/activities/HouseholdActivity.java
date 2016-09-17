@@ -41,6 +41,8 @@ public class HouseholdActivity extends ListActivity {
 
     private HouseholdDatabaseMock hdb;
 
+    private HouseholdActivity self = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +54,8 @@ public class HouseholdActivity extends ListActivity {
 
         this.hdb = this.initializeDatabase(this.householdId);
 
-        this.setListAdapter(new ClusterListAdapter(this, this.hdb.getHousehold().getClusters()));
+        final ClusterListAdapter adapter = new ClusterListAdapter(this, this.hdb.getHousehold().getClusters());
+        this.setListAdapter(adapter);
 
         UI.ui().registerRefreshCallback(new Callable<Void>() {
             @Override
@@ -60,7 +63,8 @@ public class HouseholdActivity extends ListActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        getListView().invalidateViews();
+//                        getListView().invalidateViews();
+                        adapter.notifyDataSetChanged();
                     }
                 });
                 return null;
@@ -74,7 +78,11 @@ public class HouseholdActivity extends ListActivity {
     }
 
     private HouseholdDatabaseMock initializeDatabase(String householdId){
-        return new HouseholdDatabaseMock(householdId);
+        if(HouseholdDatabaseMock.db == null){
+            HouseholdDatabaseMock.db = new HouseholdDatabaseMock(householdId);
+        }
+        Log.e("e", "initializing db");
+        return HouseholdDatabaseMock.db;
     }
 
     private class ClusterListAdapter extends ArrayAdapter<Cluster>{
@@ -96,7 +104,8 @@ public class HouseholdActivity extends ListActivity {
 
             RecyclerView tlv = (RecyclerView)rowView.findViewById(R.id.timerListView);
             tlv.setLayoutManager(new LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false));
-            tlv.setAdapter(new TimerListAdapter(clusters.get(position).getClusterAlarms()));
+            TimerListAdapter adapter = new TimerListAdapter(clusters.get(position).getClusterAlarms());
+            tlv.setAdapter(adapter);
             return rowView;
         }
 
@@ -128,7 +137,7 @@ public class HouseholdActivity extends ListActivity {
                 tc.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        Intent intent = new Intent(tc.getContext(), EditAlarmActivity.class);
+                        Intent intent = new Intent(self, EditAlarmActivity.class);
                         intent.putExtra(getString(R.string.alarm_id), alarm.getId());
                         intent.putExtra(getString(R.string.alarm_time), alarm.getTime());
                         intent.putExtra(getString(R.string.alarm_active), alarm.getActive());
@@ -156,7 +165,7 @@ public class HouseholdActivity extends ListActivity {
     private ClusterAlarm findAlarmById(String id){
         for (Cluster cluster : this.hdb.getHousehold().getClusters()) {
             for (ClusterAlarm alarm : cluster.getClusterAlarms()) {
-                if(alarm.getId() == id){
+                if(alarm.getId().equals(id)){
                     return alarm;
                 }
             }

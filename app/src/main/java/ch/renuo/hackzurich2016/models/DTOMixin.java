@@ -6,13 +6,10 @@ import java.util.UUID;
  * Created by yk on 17/09/16.
  */
 abstract public class DTOMixin implements DTO{
-    private String id;
+    private String id = UUID.randomUUID().toString();
 
     @Override
     public String getId() {
-        if(id == null){
-            id = UUID.randomUUID().toString();
-        }
         return id;
     }
 

@@ -23,6 +23,8 @@ public class HouseholdDatabaseMock {
 
     private Household household;
 
+    public static HouseholdDatabaseMock db;
+
     public HouseholdDatabaseMock(String householdId){
         this.householdId = householdId;
         this.household = new HouseholdImpl("My Household", new ArrayList<Cluster>());
@@ -72,7 +74,7 @@ public class HouseholdDatabaseMock {
 
     // Cluster Alarms
     public void saveClusterAlarm(ClusterAlarm alarm){
-        Log.e("e", "f");
+        Log.e("e", "saving alarm");
         UI.ui().refreshUI();
     }
     public void snoozeClusterAlarm(ClusterAlarm alarm){

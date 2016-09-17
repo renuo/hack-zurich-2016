@@ -23,7 +23,7 @@ public class ClusterAlarmImpl extends DTOMixin implements ClusterAlarm {
 
     @Override
     public void setTime(String time) {
-
+        this.time = time;
     }
 
     @Override

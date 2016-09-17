@@ -31,26 +31,32 @@ public class EditAlarmActivity extends AppCompatActivity {
         int hour = Integer.valueOf(timeSplits[0]);
         int minute = Integer.valueOf(timeSplits[1]);
 
+        ((TimePicker)findViewById(R.id.timePicker)).setIs24HourView(true);
         ((TimePicker)findViewById(R.id.timePicker)).setHour(hour);
         ((TimePicker)findViewById(R.id.timePicker)).setMinute(minute);
         ((Switch)findViewById(R.id.activeSwitch)).setChecked(alarmActive);
     }
 
-    public void onSaveClicked(View view){
+    private void doResult(int retval){
+        this.alarmActive = ((Switch)findViewById(R.id.activeSwitch)).isChecked();
+        int hour = ((TimePicker)findViewById(R.id.timePicker)).getHour();
+        int minute = ((TimePicker)findViewById(R.id.timePicker)).getMinute();
+        this.alarmTime = String.format("%02d", hour) + ":" + String.format("%02d", minute);
+
         Intent result = new Intent();
         result.putExtra(getString(R.string.alarm_id), this.alarmId);
         result.putExtra(getString(R.string.alarm_time), this.alarmTime);
         result.putExtra(getString(R.string.alarm_active), this.alarmActive);
         result.putExtra(getString(R.string.alarm_new), this.alarmNew);
-        setResult(0, result);
+        setResult(retval, result);
+        finish();
+    }
+
+    public void onSaveClicked(View view){
+        doResult(0);
     }
 
     public void onDeleteClicked(View view){
-        Intent result = new Intent();
-        result.putExtra(getString(R.string.alarm_id), this.alarmId);
-        result.putExtra(getString(R.string.alarm_time), this.alarmTime);
-        result.putExtra(getString(R.string.alarm_active), this.alarmActive);
-        result.putExtra(getString(R.string.alarm_new), this.alarmNew);
-        setResult(1, result);
+        doResult(1);
     }
 }
