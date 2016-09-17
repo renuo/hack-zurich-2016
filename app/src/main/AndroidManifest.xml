@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HouseholdActivity"></activity>
+        <activity android:name=".activities.HouseholdActivity" />
+        <activity android:name=".activities.EditAlarmActivity"></activity>
     </application>
 
 </manifest>

@@ -2,7 +2,7 @@ package ch.renuo.hackzurich2016.models;
 
 import java.util.List;
 
-public class DeviceImpl implements Device {
+public class DeviceImpl extends DTOMixin implements Device {
     private Cluster cluster;
     private List<SystemAlarm> systemAlarm;
 

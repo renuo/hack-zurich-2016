@@ -1,6 +1,6 @@
 package ch.renuo.hackzurich2016.models;
 
-public class SystemAlarmImpl implements SystemAlarm {
+public class SystemAlarmImpl extends DTOMixin implements SystemAlarm {
     private String time;
     private boolean active;
 

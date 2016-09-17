@@ -1,6 +1,6 @@
 package ch.renuo.hackzurich2016.models;
 
-public class ClusterAlarmImpl implements ClusterAlarm {
+public class ClusterAlarmImpl extends DTOMixin implements ClusterAlarm {
     private Cluster cluster;
     private String time;
     private boolean active;
@@ -22,7 +22,17 @@ public class ClusterAlarmImpl implements ClusterAlarm {
     }
 
     @Override
+    public void setTime(String time) {
+
+    }
+
+    @Override
     public boolean getActive() {
         return active;
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

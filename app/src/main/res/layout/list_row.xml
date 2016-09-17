@@ -13,7 +13,7 @@
         android:contentDescription="TODO" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/secondLine"
+        android:id="@+id/timerListView"
         android:layout_width="fill_parent"
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
@@ -23,16 +23,16 @@
     </android.support.v7.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/firstLine"
+        android:id="@+id/clusterName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/secondLine"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_above="@id/timerListView"
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/icon"
         android:gravity="center_vertical"
-        android:text="Example application"
+        android:text="[name missing]"
         android:textSize="16sp" />
 
 </RelativeLayout>

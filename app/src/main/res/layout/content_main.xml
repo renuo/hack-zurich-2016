@@ -45,7 +45,8 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/createHouseholdButton" />
+                android:id="@+id/createHouseholdButton"
+                android:onClick="onCreateHouseholdClick"/>
 
             <TextView
                 android:layout_width="wrap_content"

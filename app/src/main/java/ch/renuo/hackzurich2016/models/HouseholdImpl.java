@@ -2,7 +2,7 @@ package ch.renuo.hackzurich2016.models;
 
 import java.util.List;
 
-public class HouseholdImpl implements Household {
+public class HouseholdImpl extends DTOMixin implements Household {
     private String name;
     private List<Cluster> cluster;
 

@@ -3,8 +3,9 @@
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <TextClock
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textClock" />
+        android:id="@+id/textClock"
+        android:text="NaN"/>
 </LinearLayout>

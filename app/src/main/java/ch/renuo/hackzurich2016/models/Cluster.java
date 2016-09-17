@@ -2,7 +2,7 @@ package ch.renuo.hackzurich2016.models;
 
 import java.util.List;
 
-public interface Cluster {
+public interface Cluster extends DTO{
     Household getHousehold();
 
     String getName();

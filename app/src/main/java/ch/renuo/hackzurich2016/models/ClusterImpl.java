@@ -2,13 +2,13 @@ package ch.renuo.hackzurich2016.models;
 
 import java.util.List;
 
-public class ClusterImpl implements Cluster {
+public class ClusterImpl extends DTOMixin implements Cluster {
     private Household household;
     private String name;
     private List<ClusterAlarm> clusterAlarms;
     private List<Device> devices;
 
-    public void Cluster(Household household, String name, List<ClusterAlarm> clusterAlarms,
+    public ClusterImpl(Household household, String name, List<ClusterAlarm> clusterAlarms,
                         List<Device> devices) {
         this.household = household;
         this.name = name;
