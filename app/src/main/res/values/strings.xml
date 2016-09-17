@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Hack Zurich 2016</string>
     <string name="action_settings">Settings</string>
+    <string name="preference_key_file">com.renuo.hackzurich2016.settings</string>
+    <string name="device_id">com.renuo.hackzurich2016.device_id</string>
+    <string name="household_id">com.renuo.hackzurich2016.household_id</string>
 </resources>
