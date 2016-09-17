@@ -22,6 +22,7 @@
         <activity android:name=".activities.EditAlarmActivity"></activity>
         <activity android:name=".activities.AlarmActivity"></activity>
         <activity android:name=".activities.BarcodeActivity"></activity>
+        <receiver android:name=".alarms.StartAlarmReceiver" ></receiver>
     </application>
 
 </manifest>

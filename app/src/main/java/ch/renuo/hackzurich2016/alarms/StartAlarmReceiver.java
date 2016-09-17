@@ -3,10 +3,12 @@ package ch.renuo.hackzurich2016.alarms;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 
 import java.util.UUID;
 
@@ -15,32 +17,21 @@ import ch.renuo.hackzurich2016.helpers.AlarmTimeHelper;
 import ch.renuo.hackzurich2016.models.SystemAlarm;
 import ch.renuo.hackzurich2016.models.SystemAlarmImpl;
 
-public class AlarmBroadcastReceiver extends WakefulBroadcastReceiver {
-    private AlarmManager alarmManager;
-    // The pending intent that is triggered when the alarm fires.
-    private PendingIntent alarmIntent;
+public class StartAlarmReceiver extends BroadcastReceiver {
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // BEGIN_INCLUDE(alarm_onreceive)
-        /*
-         * If your receiver intent includes extras that need to be passed along to the
-         * service, use setComponent() to indicate that the service should handle the
-         * receiver's intent. For example:
-         *
-         * ComponentName comp = new ComponentName(context.getPackageName(),
-         *      MyService.class.getName());
-         *
-         * // This intent passed in this call will include the wake lock extra as well as
-         * // the receiver intent contents.
-         * startWakefulService(context, (intent.setComponent(comp)));
-         *
-         * In this example, we simply create a new intent to deliver to the service.
-         * This intent holds an extra identifying the wake lock.
-         */
-//            Intent service = new Intent(context, AlarmActivity.class);
+        String alarmUUID = intent.getStringExtra(AlarmController.ALARM_UUID_TAG);
+        alarmUUID = alarmUUID != null ? alarmUUID : "";
 
-        context.startActivity(new Intent(context, AlarmActivity.class));
+        Log.i("StartAlarmReceiver", "Starting Alarm " + alarmUUID);
+
+
+        AlarmController.setFiring(UUID.fromString(alarmUUID), true);
+        Intent activityIntent = new Intent(context, AlarmActivity.class);
+        activityIntent.putExtra(AlarmController.ALARM_UUID_TAG, alarmUUID);
+        context.startActivity(activityIntent);
 
         // Start the service, keeping the device awake while it is launching.
 //            startWakefulService(context, service);

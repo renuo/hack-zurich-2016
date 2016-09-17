@@ -11,8 +11,7 @@ import android.view.View;
 import java.util.UUID;
 
 import ch.renuo.hackzurich2016.activities.HouseholdActivity;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import ch.renuo.hackzurich2016.alarms.AlarmController;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 //        DatabaseReference myRef = database.getReference("message");
 //        myRef.setValue("Hello, World 2");
 
-
+        AlarmController.setNextAlarm(getApplicationContext());
         setContentView(R.layout.activity_main);
     }
 
@@ -57,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         String householdId = UUID.randomUUID().toString();
         this.getPreferences(Context.MODE_PRIVATE).edit().putString(getString(R.string.household_id), householdId).commit();
         goToHousehold(householdId);
+
     }
 
     //http://stackoverflow.com/questions/8831050/android-how-to-read-qr-code-in-my-application
@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
             Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
             Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
             startActivity(marketIntent);
-
         }
     }
 

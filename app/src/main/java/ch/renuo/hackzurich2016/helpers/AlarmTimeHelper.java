@@ -1,5 +1,7 @@
 package ch.renuo.hackzurich2016.helpers;
 
+import android.util.Log;
+
 import java.sql.Time;
 import java.util.Calendar;
 
@@ -19,6 +21,8 @@ public class AlarmTimeHelper {
         if(nextAlarmTime.compareTo(Calendar.getInstance()) > 0) {
 
         }
+
+        Log.i("AlarmTimeHelper", nextAlarmTime.toString());
 
         return nextAlarmTime;
     }

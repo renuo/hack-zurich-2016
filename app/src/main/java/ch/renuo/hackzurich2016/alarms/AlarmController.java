@@ -16,20 +16,31 @@ import ch.renuo.hackzurich2016.models.SystemAlarm;
 import ch.renuo.hackzurich2016.models.SystemAlarmImpl;
 
 public class AlarmController {
+    private static SystemAlarm systemAlarm = new SystemAlarmImpl(UUID.randomUUID(), "16:00", true);
+    public static final String ALARM_UUID_TAG = "ALARM_UUID";
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void setNextAlarm(Context context) {
+    public static void setNextAlarm(Context context) {
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        Intent intent = new Intent(context, StartAlarmReceiver.class);
+        intent.putExtra(ALARM_UUID_TAG, systemAlarm.getId().toString());
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Log.i("AlarmController", "Setting alarm!");
-        SystemAlarm nextAlarm = new SystemAlarmImpl(UUID.randomUUID(), "13:23", true);
-        long alarmTime = new AlarmTimeHelper().alarmTime(nextAlarm).getTimeInMillis();
+//        SystemAlarm nextAlarm = new SystemAlarmImpl(UUID.randomUUID(), "14:14", true);
+//        long alarmTime = new AlarmTimeHelper().alarmTime(nextAlarm).getTimeInMillis();
 
-        AlarmManager.AlarmClockInfo info =
-                new AlarmManager.AlarmClockInfo(alarmTime, alarmIntent);
-        alarmManager.setAlarmClock(info, alarmIntent);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, 10);
+        long alarmTime = cal.getTimeInMillis();
+
+        Log.i("AlarmController", "Alarm in " + (alarmTime - Calendar.getInstance().getTimeInMillis()));
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, alarmIntent);
+    }
+
+    public static void setFiring(UUID alarmUUID, boolean firing) {
+        systemAlarm.setFiring(firing);
     }
 //
 //    private static final String INDICATOR_ACTION = "indicator";
