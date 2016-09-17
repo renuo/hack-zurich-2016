@@ -32,15 +32,15 @@ public class EditAlarmActivity extends AppCompatActivity {
         int minute = Integer.valueOf(timeSplits[1]);
 
         ((TimePicker)findViewById(R.id.timePicker)).setIs24HourView(true);
-        ((TimePicker)findViewById(R.id.timePicker)).setHour(hour);
-        ((TimePicker)findViewById(R.id.timePicker)).setMinute(minute);
+        ((TimePicker)findViewById(R.id.timePicker)).setCurrentHour(hour);
+        ((TimePicker)findViewById(R.id.timePicker)).setCurrentMinute(minute);
         ((Switch)findViewById(R.id.activeSwitch)).setChecked(alarmActive);
     }
 
     private void doResult(int retval){
         this.alarmActive = ((Switch)findViewById(R.id.activeSwitch)).isChecked();
-        int hour = ((TimePicker)findViewById(R.id.timePicker)).getHour();
-        int minute = ((TimePicker)findViewById(R.id.timePicker)).getMinute();
+        int hour = ((TimePicker)findViewById(R.id.timePicker)).getCurrentHour();
+        int minute = ((TimePicker)findViewById(R.id.timePicker)).getCurrentMinute();
         this.alarmTime = String.format("%02d", hour) + ":" + String.format("%02d", minute);
 
         Intent result = new Intent();
