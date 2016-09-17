@@ -13,17 +13,18 @@ public class AlarmTimeHelper {
         String[] timeSplits = alarm.getTime().split(":");
 
         Calendar nextAlarmTime = Calendar.getInstance();
-        nextAlarmTime.set(Calendar.HOUR_OF_DAY, Integer.valueOf(timeSplits[0]));
-        nextAlarmTime.set(Calendar.MINUTE, Integer.valueOf(timeSplits[1]));
-        nextAlarmTime.set(Calendar.SECOND, 0);
-        nextAlarmTime.set(Calendar.MILLISECOND, 0);
+//        nextAlarmTime.set(Calendar.HOUR_OF_DAY, Integer.valueOf(timeSplits[0]));
+//        nextAlarmTime.set(Calendar.MINUTE, Integer.valueOf(timeSplits[1]));
+//        nextAlarmTime.set(Calendar.SECOND, 0);
+//        nextAlarmTime.set(Calendar.MILLISECOND, 0);
+//
+//        if(nextAlarmTime.compareTo(Calendar.getInstance()) > 0) {
+//
+//        }
 
-        if(nextAlarmTime.compareTo(Calendar.getInstance()) > 0) {
-
-        }
+        nextAlarmTime.add(Calendar.SECOND, 10);
 
         Log.i("AlarmTimeHelper", nextAlarmTime.toString());
-
         return nextAlarmTime;
     }
 

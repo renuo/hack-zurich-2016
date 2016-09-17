@@ -6,13 +6,13 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import java.util.UUID;
 
 import ch.renuo.hackzurich2016.activities.HouseholdActivity;
 import ch.renuo.hackzurich2016.alarms.AlarmController;
+import ch.renuo.hackzurich2016.alarms.AlarmScheduler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
 //        myRef.setValue("Hello, World 2");
 //        this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE).edit().clear().commit();
 
-        new AlarmController(this).setNextAlarm();
+        // Connect this to db
+        new AlarmController(this).onUpdate();
 
         setContentView(R.layout.activity_main);
     }

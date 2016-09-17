@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import ch.renuo.hackzurich2016.R;
-import ch.renuo.hackzurich2016.alarms.AlarmController;
+import ch.renuo.hackzurich2016.alarms.AlarmScheduler;
 
 public class AlarmActivity extends AppCompatActivity {
 
@@ -29,7 +29,7 @@ public class AlarmActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        String alarmUUID = getIntent().getStringExtra(AlarmController.ALARM_UUID_TAG);
+        String alarmUUID = getIntent().getStringExtra(AlarmScheduler.ALARM_UUID_TAG);
         ((TextView)findViewById(R.id.alarmUUIDTextView)).setText(alarmUUID);
     }
 
