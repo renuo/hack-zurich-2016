@@ -10,12 +10,20 @@ import android.view.View;
 import java.util.UUID;
 
 import ch.renuo.hackzurich2016.activities.HouseholdActivity;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("message");
+//        myRef.setValue("Hello, World 2");
+
+
         setContentView(R.layout.activity_main);
     }
 

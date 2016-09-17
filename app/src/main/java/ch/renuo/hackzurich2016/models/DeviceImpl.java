@@ -1,19 +1,20 @@
 package ch.renuo.hackzurich2016.models;
 
 import java.util.List;
+import java.util.UUID;
 
-public class DeviceImpl extends DTOMixin implements Device {
-    private Cluster cluster;
+public class DeviceImpl implements Device {
+    private UUID id;
     private List<SystemAlarm> systemAlarm;
 
-    public DeviceImpl(Cluster cluster, List<SystemAlarm> systemAlarm) {
-        this.cluster = cluster;
+    public DeviceImpl(UUID id, List<SystemAlarm> systemAlarm) {
+        this.id = id;
         this.systemAlarm = systemAlarm;
     }
 
     @Override
-    public Cluster getCluster() {
-        return cluster;
+    public UUID getId() {
+        return id;
     }
 
     @Override

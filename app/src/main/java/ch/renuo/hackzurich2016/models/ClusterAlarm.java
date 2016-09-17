@@ -1,11 +1,16 @@
 package ch.renuo.hackzurich2016.models;
 
-public interface ClusterAlarm extends DTO{
-    Cluster getCluster();
+import java.util.List;
+import java.util.UUID;
+
+public interface ClusterAlarm {
+    UUID getId();
 
     String getTime();
     void setTime(String time);
 
     boolean getActive();
     void setActive(boolean active);
+
+    List<SystemAlarm> getSystemAlarms();
 }

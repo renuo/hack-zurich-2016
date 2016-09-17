@@ -1,23 +1,24 @@
 package ch.renuo.hackzurich2016.models;
 
 import java.util.List;
+import java.util.UUID;
 
-public class HouseholdImpl extends DTOMixin implements Household {
-    private String name;
-    private List<Cluster> cluster;
+public class HouseholdImpl implements Household {
+    public UUID id;
+    public List<Cluster> clusters;
 
-    public HouseholdImpl(String name, List<Cluster> cluster) {
-        this.name = name;
-        this.cluster = cluster;
+    public HouseholdImpl(UUID id, List<Cluster> clusters) {
+        this.id = id;
+        this.clusters = clusters;
     }
 
     @Override
-    public String getName() {
-        return name;
+    public UUID getId() {
+        return id;
     }
 
     @Override
     public List<Cluster> getClusters() {
-        return cluster;
+        return clusters;
     }
 }

@@ -1,6 +1,10 @@
 package ch.renuo.hackzurich2016.models;
 
-public interface SystemAlarm extends DTO{
+import java.util.UUID;
+
+public interface SystemAlarm {
+    UUID getId();
+
     String getTime();
 
     boolean getActive();

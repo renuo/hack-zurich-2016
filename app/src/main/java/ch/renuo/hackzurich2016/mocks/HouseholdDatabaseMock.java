@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import ch.renuo.hackzurich2016.UI;
 import ch.renuo.hackzurich2016.models.Cluster;
@@ -27,7 +28,7 @@ public class HouseholdDatabaseMock {
 
     public HouseholdDatabaseMock(String householdId){
         this.householdId = householdId;
-        this.household = new HouseholdImpl("My Household", new ArrayList<Cluster>());
+        this.household = new HouseholdImpl(UUID.randomUUID(), new ArrayList<Cluster>());
         Cluster cluster1 = new ClusterImpl(this.household, "Cluster1", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
         this.household.getClusters().add(cluster1);
         ClusterAlarm c1a1 = new ClusterAlarmImpl(cluster1, "12:33", true);
