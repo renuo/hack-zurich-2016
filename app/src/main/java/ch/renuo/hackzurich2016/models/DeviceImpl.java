@@ -6,15 +6,22 @@ import java.util.UUID;
 public class DeviceImpl implements Device {
     private UUID id;
     private List<SystemAlarm> systemAlarm;
+    private String imageUrl;
 
-    public DeviceImpl(UUID id, List<SystemAlarm> systemAlarm) {
+    public DeviceImpl(UUID id, String imageUrl, List<SystemAlarm> systemAlarm) {
         this.id = id;
+        this.imageUrl = imageUrl;
         this.systemAlarm = systemAlarm;
     }
 
     @Override
     public UUID getId() {
         return id;
+    }
+
+    @Override
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     @Override

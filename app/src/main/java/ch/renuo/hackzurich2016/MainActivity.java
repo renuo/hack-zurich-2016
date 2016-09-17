@@ -15,6 +15,7 @@ import ch.renuo.hackzurich2016.activities.HouseholdActivity;
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFKEY = "com.renuo.hackzurich2016.prefs";
+    public static final int REQUEST_CODE = 23;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent("com.google.zxing.client.android.SCAN");
             intent.putExtra("SCAN_MODE", "QR_CODE_MODE"); // "PRODUCT_MODE for bar codes
 
-            startActivityForResult(intent, 23);
+            startActivityForResult(intent, REQUEST_CODE);
 
         } catch (Exception e) {
 
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 23) {
+        if (requestCode == REQUEST_CODE) {
 
             if (resultCode == RESULT_OK) {
                 String contents = data.getStringExtra("SCAN_RESULT");

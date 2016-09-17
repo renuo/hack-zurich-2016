@@ -30,7 +30,8 @@ public class HouseholdMock {
         List<ClusterAlarm> clusterAlarms = new ArrayList<>();
         clusterAlarms.add(clusterAlarm);
 
-        Device device = new DeviceImpl(UUID.randomUUID(), systemAlarms);
+        String imageUrl = "";
+        Device device = new DeviceImpl(UUID.randomUUID(), imageUrl, systemAlarms);
 
         List<Device> devices = new ArrayList<>();
         devices.add(device);
