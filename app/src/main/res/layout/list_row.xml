@@ -9,13 +9,14 @@
         android:layout_height="fill_parent">
 
         <ImageView
-            android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:id="@+id/clusterImage"
+            android:layout_width="70dip"
+            android:layout_height="70dip"
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="6dip"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            android:src="@drawable/contact"/>
 
         <ImageButton
             android:id="@+id/addAlarmButton"
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@id/addAlarmButton"
-            android:layout_toRightOf="@id/icon"
+            android:layout_toRightOf="@id/clusterImage"
             android:scrollbars="horizontal"></android.support.v7.widget.RecyclerView>
 
         <TextView
@@ -43,7 +44,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignWithParentIfMissing="true"
             android:layout_toLeftOf="@id/addAlarmButton"
-            android:layout_toRightOf="@id/icon"
+            android:layout_toRightOf="@id/clusterImage"
             android:gravity="center_vertical"
             android:text="Row Name"
             android:textSize="16sp" />
