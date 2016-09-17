@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import ch.renuo.hackzurich2016.MainActivity;
 import ch.renuo.hackzurich2016.R;
+import ch.renuo.hackzurich2016.activities.AlarmActivity;
 import ch.renuo.hackzurich2016.data.HouseholdDatabase;
 import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
 import ch.renuo.hackzurich2016.data.HouseholdQuery;
@@ -22,7 +23,9 @@ import ch.renuo.hackzurich2016.models.Household;
 public class SystemAlarmService extends Service {
 
     public static final String ACTION_RELOAD_SERVICE = "ch.renuo.hackzurich2016.service.ACTION_RELOAD_SERVICE";
+    public static final String ACTION_START_ALARM = "ch.renuo.hackzurich2016.service.ACTION_START_ALARM";
     public static final String ACTION_STOP_ALARM = "ch.renuo.hackzurich2016.service.ACTION_STOP_ALARM";
+    public static final String TAG = "SystemAlarmService";
 
     public SystemAlarmService() {
         super();
@@ -51,16 +54,15 @@ public class SystemAlarmService extends Service {
             @Override
             protected void onChange(Household household) {
                 if(household == null){
-                    Log.d("Service", "Household is null");
+                    Log.d(TAG, "Household is null");
                     self.stopSelf();
                     return;
                 }
 
                 ClusterAlarm nextAlarm = new HouseholdQuery(household).getNextClusterAlarm(self._deviceId);
-                String nextAlarmTimeString = nextAlarm == null ? "-" : nextAlarm.getTime();
 
                 if(nextAlarm == null) {
-                    cancelAlarm();
+                    cancelScheduledAlarm();
                 } else {
                     scheduleAlarm(nextAlarm);
                 }
@@ -95,7 +97,6 @@ public class SystemAlarmService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "onStartCommand", Toast.LENGTH_SHORT).show();
         return START_STICKY;
     }
 
@@ -109,7 +110,7 @@ public class SystemAlarmService extends Service {
         _scheduler.scheduleStartAlarm(alarm.getTimeAsCalendar(), alarm.getId().toString());
     }
 
-    private void cancelAlarm() {
+    private void cancelScheduledAlarm() {
         Toast.makeText(self, "Canceling Alarm", Toast.LENGTH_SHORT).show();
         _scheduler.cancelStartAlarm("");
     }

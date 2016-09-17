@@ -43,8 +43,11 @@ public class ClusterAlarmImpl implements ClusterAlarm {
         nextAlarmTime.set(Calendar.SECOND, 0);
         nextAlarmTime.set(Calendar.MILLISECOND, 0);
 
-        if(nextAlarmTime.compareTo(Calendar.getInstance()) > 0) {
+        if(nextAlarmTime.compareTo(Calendar.getInstance()) < 0) {
+            Log.d("ClusterAlarm", "Alarm is tomorrow: " + getTime());
             nextAlarmTime.add(Calendar.DAY_OF_YEAR, 1);
+        } else {
+            Log.d("ClusterAlarm", "Alarm is today: " + getTime());
         }
 
         return nextAlarmTime;

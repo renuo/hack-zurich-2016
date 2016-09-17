@@ -10,11 +10,9 @@ import android.util.Log;
 
 import java.util.Calendar;
 
-import ch.renuo.hackzurich2016.helpers.AlarmTimeHelper;
-import ch.renuo.hackzurich2016.models.SystemAlarm;
-
 public class AlarmScheduler {
     public static final String ALARM_UUID_TAG = "ALARM_UUID";
+    public static final String TAG = "AlarmScheduler";
 
     private AlarmManager _alarmManager;
     private Context _context;
@@ -26,17 +24,18 @@ public class AlarmScheduler {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void scheduleStartAlarm(Calendar at, String id) {
-        _alarmManager.set(AlarmManager.RTC_WAKEUP, at.getTimeInMillis(), getPendingIntent(id));
+        long in = at.getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
+        Log.d(TAG, "in: " + in + " id " + id );
+        _alarmManager.set(AlarmManager.RTC_WAKEUP, at.getTimeInMillis(), getOperation(id));
     }
 
     public void cancelStartAlarm(String id) {
-        _alarmManager.cancel(getPendingIntent(id));
+        _alarmManager.cancel(getOperation(id));
     }
 
-    private PendingIntent getPendingIntent(String id) {
-        Intent intent = new Intent(_context, StartAlarmReceiver.class);
-
-        intent.putExtra(ALARM_UUID_TAG, id);
-        return PendingIntent.getBroadcast(_context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    private PendingIntent getOperation(String id) {
+        Intent operation = new Intent(_context, StartAlarmReceiver.class);
+        operation.putExtra(ALARM_UUID_TAG, id);
+        return PendingIntent.getBroadcast(_context, 0, operation, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
