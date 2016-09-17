@@ -9,6 +9,7 @@ import android.view.View;
 
 import java.util.UUID;
 
+import ch.renuo.hackzurich2016.activities.AlarmActivity;
 import ch.renuo.hackzurich2016.activities.HouseholdActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -56,5 +57,13 @@ public class MainActivity extends AppCompatActivity {
         String householdId = UUID.randomUUID().toString();
         this.getPreferences(Context.MODE_PRIVATE).edit().putString(getString(R.string.household_id), householdId).commit();
         goToHousehold(householdId);
+    }
+
+    public void onAlarmClick(View view){
+        Intent intent = new Intent(this, AlarmActivity.class);
+//        intent.putExtra(getString(R.string.device_id), deviceId);
+//        intent.putExtra(getString(R.string.household_id), householdId);
+        startActivity(intent);
+        finish();
     }
 }

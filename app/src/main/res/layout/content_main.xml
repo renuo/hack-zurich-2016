@@ -27,6 +27,25 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/createHouseholdButton"
+                android:onClick="onCreateHouseholdClick"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Create New Household"
+                android:id="@+id/textView2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/joinHouseholdButton" />
 
             <TextView
@@ -40,20 +59,21 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" >
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/createHouseholdButton"
-                android:onClick="onCreateHouseholdClick"/>
+                android:id="@+id/imageButton"
+                android:onClick="onAlarmClick" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Create New Household"
-                android:id="@+id/textView2" />
+                android:text="Alarm"
+                android:id="@+id/textView3" />
         </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>
