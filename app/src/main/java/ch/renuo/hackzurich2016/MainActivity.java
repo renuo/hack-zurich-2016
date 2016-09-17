@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 //        myRef.setValue("Hello, World 2");
 //        this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE).edit().clear().commit();
 
-        AlarmController.setNextAlarm(getApplicationContext());
+        new AlarmController(this).setNextAlarm();
 
         setContentView(R.layout.activity_main);
     }

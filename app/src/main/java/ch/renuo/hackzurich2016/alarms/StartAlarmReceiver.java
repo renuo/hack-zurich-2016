@@ -24,10 +24,11 @@ public class StartAlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String alarmUUID = intent.getStringExtra(AlarmController.ALARM_UUID_TAG);
         alarmUUID = alarmUUID != null ? alarmUUID : "";
+        AlarmController alarmController = new AlarmController(context);
 
         Log.i("StartAlarmReceiver", "Starting Alarm " + alarmUUID);
 
-        AlarmController.setFiring(UUID.fromString(alarmUUID), true);
+        alarmController.setFiring(UUID.fromString(alarmUUID), true);
         Intent activityIntent = new Intent(context, AlarmActivity.class);
         activityIntent.putExtra(AlarmController.ALARM_UUID_TAG, alarmUUID);
         context.startActivity(activityIntent);

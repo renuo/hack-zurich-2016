@@ -16,31 +16,44 @@ import ch.renuo.hackzurich2016.models.SystemAlarm;
 import ch.renuo.hackzurich2016.models.SystemAlarmImpl;
 
 public class AlarmController {
-    private static SystemAlarm systemAlarm = new SystemAlarmImpl(UUID.randomUUID(), "16:00", true);
     public static final String ALARM_UUID_TAG = "ALARM_UUID";
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void setNextAlarm(Context context) {
-        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, StartAlarmReceiver.class);
-        intent.putExtra(ALARM_UUID_TAG, systemAlarm.getId().toString());
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+    private AlarmManager _alarmManager;
+    private Context _context;
 
-        Log.i("AlarmController", "Setting alarm!");
-//        SystemAlarm nextAlarm = new SystemAlarmImpl(UUID.randomUUID(), "14:14", true);
-//        long alarmTime = new AlarmTimeHelper().alarmTime(nextAlarm).getTimeInMillis();
+    public AlarmController(Context context) {
+        this._context = context;
+        this._alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void setNextAlarm() {
+        SystemAlarm alarm = getNextAlarm();
+        Intent intent = new Intent(_context, StartAlarmReceiver.class);
+        intent.putExtra(ALARM_UUID_TAG, alarm.getId().toString());
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(_context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        long alarmTime = new AlarmTimeHelper().alarmTime(alarm).getTimeInMillis();
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.SECOND, 10);
-        long alarmTime = cal.getTimeInMillis();
+        alarmTime = cal.getTimeInMillis();
 
         Log.i("AlarmController", "Alarm in " + (alarmTime - Calendar.getInstance().getTimeInMillis()));
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, alarmIntent);
+        _alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, alarmIntent);
     }
 
-    public static void setFiring(UUID alarmUUID, boolean firing) {
-        systemAlarm.setFiring(firing);
+    public void setFiring(UUID alarmUUID, boolean firing) {
+        //systemAlarm.setFiring(firing);
+    }
+
+    private void clearAllAlarms() {
+//        _alarmManager.cancel();
+    }
+
+    private SystemAlarm getNextAlarm() {
+       return new SystemAlarmImpl(UUID.randomUUID(), "16:00", true);
     }
 //
 //    private static final String INDICATOR_ACTION = "indicator";
