@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import ch.renuo.hackzurich2016.activities.HouseholdActivity;
 import ch.renuo.hackzurich2016.alarms.AlarmController;
+import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Connect this to db
         new AlarmController(this).onUpdate();
+
+        Intent service = new Intent(this, SystemAlarmService.class);
+        startService(service);
 
         setContentView(R.layout.activity_main);
 
