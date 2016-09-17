@@ -7,4 +7,14 @@
         android:orderInCategory="100"
         android:title="Leave Household"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_login"
+        android:orderInCategory="200"
+        android:title="Login"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="201"
+        android:title="Logout"
+        app:showAsAction="never" />
 </menu>
