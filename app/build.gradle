@@ -32,3 +32,4 @@ dependencies {
     compile 'com.google.firebase:firebase-config:9.4.0'
 }
 
+apply plugin: 'com.google.gms.google-services'
