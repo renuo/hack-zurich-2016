@@ -1,24 +1,24 @@
 package ch.renuo.hackzurich2016.models;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ClusterImpl implements Cluster {
-    private Household household;
+    private UUID id;
     private String name;
     private List<ClusterAlarm> clusterAlarms;
     private List<Device> devices;
 
-    public void Cluster(Household household, String name, List<ClusterAlarm> clusterAlarms,
-                        List<Device> devices) {
-        this.household = household;
+    public ClusterImpl(UUID id, String name, List<ClusterAlarm> clusterAlarms, List<Device> devices) {
+        this.id = id;
         this.name = name;
         this.clusterAlarms = clusterAlarms;
         this.devices = devices;
     }
 
     @Override
-    public Household getHousehold() {
-        return household;
+    public UUID getId() {
+        return id;
     }
 
     @Override
