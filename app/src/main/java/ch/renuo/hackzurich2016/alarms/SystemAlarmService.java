@@ -18,6 +18,8 @@ import ch.renuo.hackzurich2016.models.Household;
 
 public class SystemAlarmService extends Service {
     public static final String TAG = "SystemAlarmService";
+    public static final String STOP_ALARM_EVENT = "STOP_ALARM_EVENT";
+
     public PrefsHelper prefs;
     private HouseholdDatabase _db;
     private AlarmScheduler _scheduler;

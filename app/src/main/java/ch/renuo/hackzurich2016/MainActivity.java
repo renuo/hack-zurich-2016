@@ -11,7 +11,6 @@ import android.view.View;
 import java.util.UUID;
 
 import ch.renuo.hackzurich2016.activities.HouseholdActivity;
-import ch.renuo.hackzurich2016.alarms.AlarmController;
 import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
 
 public class MainActivity extends AppCompatActivity {

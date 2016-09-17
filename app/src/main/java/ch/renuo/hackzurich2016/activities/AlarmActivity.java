@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
@@ -19,8 +18,8 @@ import java.util.UUID;
 
 import ch.renuo.hackzurich2016.MainActivity;
 import ch.renuo.hackzurich2016.R;
-import ch.renuo.hackzurich2016.alarms.AlarmController;
 import ch.renuo.hackzurich2016.alarms.AlarmScheduler;
+import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
 import ch.renuo.hackzurich2016.data.HouseholdDatabase;
 import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
 import ch.renuo.hackzurich2016.data.HouseholdQuery;
@@ -57,7 +56,7 @@ public class AlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
 
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
-                new IntentFilter(AlarmController.STOP_ALARM_EVENT));
+                new IntentFilter(SystemAlarmService.STOP_ALARM_EVENT));
     }
 
     @Override
