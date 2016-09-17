@@ -13,8 +13,8 @@ import ch.renuo.hackzurich2016.models.Household;
 public class QRcodeInterface {
     public static final int QRCODE_DIMENSION = 300;
 
-    public static Bitmap generateBitmap(Household household) throws Exception {
-        BitMatrix matrix = generateBitMatrix(household);
+    public static Bitmap generateBitmap(String householdId) throws Exception {
+        BitMatrix matrix = generateBitMatrix(householdId);
 
         Bitmap bitmap = Bitmap.createBitmap(QRCODE_DIMENSION, QRCODE_DIMENSION, Bitmap.Config.ARGB_8888);
         for (int i = 0; i < QRCODE_DIMENSION; i++)
@@ -24,8 +24,8 @@ public class QRcodeInterface {
         return bitmap;
     }
 
-    public static BitMatrix generateBitMatrix(Household household) throws WriterException {
-        String qrCodeContent = household.getId().toString();
+    public static BitMatrix generateBitMatrix(String householdId) throws WriterException {
+        String qrCodeContent = householdId;
         return new QRCodeWriter().encode(qrCodeContent, BarcodeFormat.QR_CODE, QRCODE_DIMENSION, QRCODE_DIMENSION);
     }
 }

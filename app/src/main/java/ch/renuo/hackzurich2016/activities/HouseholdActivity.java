@@ -241,7 +241,9 @@ public class HouseholdActivity extends ListActivity {
     }
 
     public void addMemberButtonClicked(View view){
-
+        Intent intent = new Intent(this, BarcodeActivity.class);
+        intent.putExtra(getString(R.string.household_id), this.householdId);
+        startActivity(intent);
     }
 
 }
