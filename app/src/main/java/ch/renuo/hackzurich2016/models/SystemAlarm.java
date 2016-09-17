@@ -8,4 +8,8 @@ public interface SystemAlarm {
     String getTime();
 
     boolean getActive();
+
+    boolean getFiring();
+
+    void setFiring(boolean firing);
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextClock
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textClock"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:enabled="true"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:textSize="75dp"
+            android:includeFontPadding="false"
+            android:padding="25dp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/alarmUUIDTextView"
+            android:layout_below="@+id/textClock"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Turn off"
+            android:id="@+id/turnOffButton"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:enabled="true"
+            android:onClick="onTurnOffButtonClick" />
+    </RelativeLayout>
+</LinearLayout>

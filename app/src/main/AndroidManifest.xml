@@ -25,10 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.AlarmActivity" android:launchMode="singleInstance"></activity>
         <activity android:name=".activities.HouseholdActivity"/>
         <activity android:name=".activities.EditAlarmActivity" />
         <activity android:name=".activities.BarcodeActivity"></activity>
+        <receiver android:name=".alarms.StartAlarmReceiver" ></receiver>
+
+        <service
+            android:name=".alarms.SystemAlarmService"
+            android:exported="false" />
     </application>
-
-
 </manifest>

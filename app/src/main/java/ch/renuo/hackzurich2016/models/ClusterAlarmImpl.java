@@ -1,5 +1,8 @@
 package ch.renuo.hackzurich2016.models;
 
+import android.util.Log;
+
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +32,25 @@ public class ClusterAlarmImpl implements ClusterAlarm {
     @Override
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public Calendar getTimeAsCalendar() {
+        String[] timeSplits = getTime().split(":");
+
+        Calendar nextAlarmTime = Calendar.getInstance();
+        nextAlarmTime.set(Calendar.HOUR_OF_DAY, Integer.valueOf(timeSplits[0]));
+        nextAlarmTime.set(Calendar.MINUTE, Integer.valueOf(timeSplits[1]));
+        nextAlarmTime.set(Calendar.SECOND, 0);
+        nextAlarmTime.set(Calendar.MILLISECOND, 0);
+
+        if(nextAlarmTime.compareTo(Calendar.getInstance()) < 0) {
+            Log.d("ClusterAlarm", "Alarm is tomorrow: " + getTime());
+            nextAlarmTime.add(Calendar.DAY_OF_YEAR, 1);
+        } else {
+            Log.d("ClusterAlarm", "Alarm is today: " + getTime());
+        }
+
+        return nextAlarmTime;
     }
 
     @Override

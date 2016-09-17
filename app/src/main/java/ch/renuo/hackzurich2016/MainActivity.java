@@ -11,6 +11,7 @@ import android.view.View;
 import java.util.UUID;
 
 import ch.renuo.hackzurich2016.activities.HouseholdActivity;
+import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        DatabaseReference myRef = database.getReference("message");
 //        myRef.setValue("Hello, World 2");
-
 //        this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE).edit().clear().commit();
 
         setContentView(R.layout.activity_main);
@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
             Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
             Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
             startActivity(marketIntent);
-
         }
     }
 
