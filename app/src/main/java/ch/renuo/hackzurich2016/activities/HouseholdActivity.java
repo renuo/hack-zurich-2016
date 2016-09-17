@@ -1,21 +1,15 @@
 package ch.renuo.hackzurich2016.activities;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -28,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextClock;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -36,7 +29,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 
 import ch.renuo.hackzurich2016.MainActivity;
 import ch.renuo.hackzurich2016.R;
@@ -44,7 +36,6 @@ import ch.renuo.hackzurich2016.UI;
 import ch.renuo.hackzurich2016.data.HouseholdDatabase;
 import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
 import ch.renuo.hackzurich2016.data.SuccessValueEventListener;
-import ch.renuo.hackzurich2016.mocks.HouseholdDatabaseMock;
 import ch.renuo.hackzurich2016.models.Cluster;
 import ch.renuo.hackzurich2016.models.ClusterAlarm;
 import ch.renuo.hackzurich2016.models.ClusterAlarmImpl;
@@ -161,7 +152,9 @@ public class HouseholdActivity extends AppCompatActivity {
                 Cluster myCluster = findMyCluster(household);
                 if(myCluster == null){
                     myCluster = new ClusterImpl(UUID.randomUUID(), "You", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
-                    myCluster.getDevices().add(new DeviceImpl(self.deviceId, new ArrayList<SystemAlarm>()));
+                    // TODO: add image url from file
+                    String imageUrl = "";
+                    myCluster.getDevices().add(new DeviceImpl(self.deviceId, imageUrl, new ArrayList<SystemAlarm>()));
                     household.getClusters().add(myCluster);
                     hdb.updateHousehold(household);
                 }

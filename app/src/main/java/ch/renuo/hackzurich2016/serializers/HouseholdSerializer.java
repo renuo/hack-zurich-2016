@@ -86,6 +86,7 @@ public class HouseholdSerializer {
     private Map<String, Object> getDevice(UUID clusterId, Device device) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", device.getId().toString());
+        map.put("imageUrl", device.getImageUrl());
         map.put("clusterId", clusterId.toString());
         return map;
     }
