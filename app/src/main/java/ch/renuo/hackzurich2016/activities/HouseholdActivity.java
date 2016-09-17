@@ -30,6 +30,8 @@ import android.widget.TextClock;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -64,7 +66,19 @@ public class HouseholdActivity extends ListActivity {
     private HouseholdActivity self = this;
 
     private void redraw(){
-        final ClusterListAdapter adapter = new ClusterListAdapter(this, this.household.getClusters());
+        final Cluster myCluster = findMyCluster(this.household);
+        List<Cluster> clusters = this.household.getClusters();
+        Collections.sort(clusters, new Comparator<Cluster>() {
+            @Override
+            public int compare(Cluster o1, Cluster o2) {
+                if(o1 == myCluster)
+                    return -1;
+                if(o2 == myCluster)
+                    return 1;
+                return 0;
+            }
+        });
+        final ClusterListAdapter adapter = new ClusterListAdapter(this, clusters);
         this.setListAdapter(adapter);
         Log.e("r", "redraw");
     }
