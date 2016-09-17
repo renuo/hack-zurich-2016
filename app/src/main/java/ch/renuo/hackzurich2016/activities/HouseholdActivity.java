@@ -5,6 +5,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
+import ch.renuo.hackzurich2016.MainActivity;
 import ch.renuo.hackzurich2016.R;
 import ch.renuo.hackzurich2016.UI;
 import ch.renuo.hackzurich2016.data.HouseholdDatabase;
@@ -144,6 +147,12 @@ public class HouseholdActivity extends AppCompatActivity {
         SuccessValueEventListener<Household> listener = new SuccessValueEventListener<Household>() {
             @Override
             protected void onChange(Household household) {
+                if(household == null){
+                    self.getSharedPreferences(MainActivity.PREFKEY, Context.MODE_PRIVATE).edit().clear().commit();
+                    self.finish();
+                    startActivity(new Intent(self, MainActivity.class));
+                    return;
+                }
                 self.household = household;
                 Log.e("e","onchange");
                 UI.ui().refreshUI();
@@ -347,6 +356,30 @@ public class HouseholdActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BarcodeActivity.class);
         intent.putExtra(getString(R.string.household_id), this.householdId);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_leave_household) {
+            Cluster myCluster = findMyCluster(self.household);
+            self.household.getClusters().remove(myCluster);
+            self.getSharedPreferences(MainActivity.PREFKEY, Context.MODE_PRIVATE).edit().clear().commit();
+            finish();
+            startActivity(new Intent(self, MainActivity.class));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

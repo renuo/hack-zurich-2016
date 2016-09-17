@@ -17,6 +17,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String PREFKEY = "com.renuo.hackzurich2016.prefs";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 //        DatabaseReference myRef = database.getReference("message");
 //        myRef.setValue("Hello, World 2");
 
-//        this.getPreferences(Context.MODE_PRIVATE).edit().clear().commit();
+//        this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE).edit().clear().commit();
 
         setContentView(R.layout.activity_main);
     }
@@ -34,15 +36,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        String householdId = this.getPreferences(Context.MODE_PRIVATE).getString(getString(R.string.household_id), null);
-        householdId = "14bf3067-aad0-4b11-bd9d-0add0019f463";
+        String householdId = this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE).getString(getString(R.string.household_id), null);
         if(householdId != null){
             goToHousehold(householdId, false);
         }
     }
 
     private void goToHousehold(String householdId, boolean create) {
-        SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences prefs = this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE);
         String deviceId = prefs.getString(getString(R.string.device_id), null);
         if(deviceId == null){
             deviceId = UUID.randomUUID().toString();
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onCreateHouseholdClick(View view){
         String householdId = UUID.randomUUID().toString();
-        this.getPreferences(Context.MODE_PRIVATE).edit().putString(getString(R.string.household_id), householdId).commit();
+        this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE).edit().putString(getString(R.string.household_id), householdId).commit();
         goToHousehold(householdId, true);
     }
 
