@@ -27,7 +27,6 @@ public class StartAlarmReceiver extends BroadcastReceiver {
 
         Log.i("StartAlarmReceiver", "Starting Alarm " + alarmUUID);
 
-
         AlarmController.setFiring(UUID.fromString(alarmUUID), true);
         Intent activityIntent = new Intent(context, AlarmActivity.class);
         activityIntent.putExtra(AlarmController.ALARM_UUID_TAG, alarmUUID);

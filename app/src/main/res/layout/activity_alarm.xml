@@ -29,5 +29,15 @@
             android:id="@+id/alarmUUIDTextView"
             android:layout_below="@+id/textClock"
             android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Turn off"
+            android:id="@+id/turnOffButton"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:enabled="true"
+            android:onClick="onTurnOffButtonClick" />
     </RelativeLayout>
 </LinearLayout>
