@@ -11,8 +11,7 @@ public class StartAlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String uuid = extractUUID(intent);
-        startActivity(context, uuid);
+        startActivity(context, extractUUID(intent));
     }
 
     private void startActivity(Context context, String uuid) {
@@ -23,7 +22,6 @@ public class StartAlarmReceiver extends BroadcastReceiver {
 
     @NonNull
     private String extractUUID(Intent intent) {
-        String uuid = intent.getStringExtra(AlarmScheduler.ALARM_UUID_TAG);
-        return uuid != null ? uuid : "";
+        return intent.getStringExtra(AlarmScheduler.ALARM_UUID_TAG);
     }
 }
