@@ -5,7 +5,9 @@ import java.util.UUID;
 import ch.renuo.hackzurich2016.models.Household;
 
 public interface HouseholdDatabase {
-    void getHousehold(UUID householdId, SuccessValueEventListener<Household> listener);
+    void getHousehold(SuccessValueEventListener<Household> listener);
 
-    public void createHousehold(UUID householdId, SuccessValueEventListener<Household> listener);
+    public void createHousehold(SuccessValueEventListener<Household> listener);
+
+    public void updateHousehold(Household household);
 }
