@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.HouseholdActivity" />
-        <activity android:name=".activities.EditAlarmActivity"></activity>
+        <activity android:name=".activities.EditAlarmActivity" />
+        <activity android:name=".activities.BarcodeActivity"></activity>
     </application>
 
 </manifest>

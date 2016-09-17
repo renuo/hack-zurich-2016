@@ -12,12 +12,20 @@
         android:layout_marginRight="6dip"
         android:contentDescription="TODO" />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/add"
+        android:id="@+id/addAlarmButton"
+        android:layout_alignParentRight="true"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/timerListView"
         android:layout_width="fill_parent"
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@id/addAlarmButton"
         android:layout_toRightOf="@id/icon"
         android:scrollbars="horizontal">
     </android.support.v7.widget.RecyclerView>
@@ -26,7 +34,7 @@
         android:id="@+id/clusterName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@id/addAlarmButton"
         android:layout_alignParentTop="true"
         android:layout_above="@id/timerListView"
         android:layout_alignWithParentIfMissing="true"
@@ -34,5 +42,6 @@
         android:gravity="center_vertical"
         android:text="[name missing]"
         android:textSize="16sp" />
+
 
 </RelativeLayout>

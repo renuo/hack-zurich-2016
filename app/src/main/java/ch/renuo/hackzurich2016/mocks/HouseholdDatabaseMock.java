@@ -68,14 +68,19 @@ public class HouseholdDatabaseMock {
     }
 
     // Cluster Alarms
-    public void saveClusterAlarm(ClusterAlarm alarm){
+    public void saveClusterAlarm(Cluster cluster, ClusterAlarm alarm){
         Log.e("e", "saving alarm");
+        int a = cluster.getClusterAlarms().indexOf(alarm);
+        if(a < 0){
+            cluster.getClusterAlarms().add(alarm);
+        }
         UI.ui().refreshUI();
     }
     public void snoozeClusterAlarm(ClusterAlarm alarm){
 
     }
-    public void deleteClusterAlarm(ClusterAlarm alarm){
+
+    public void deleteClusterAlarm(Cluster cluster, ClusterAlarm alarm){
 
     }
 
