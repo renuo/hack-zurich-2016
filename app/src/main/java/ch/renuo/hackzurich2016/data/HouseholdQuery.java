@@ -1,8 +1,14 @@
 package ch.renuo.hackzurich2016.data;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.Pair;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import ch.renuo.hackzurich2016.helpers.AlarmTimeHelper;
 import ch.renuo.hackzurich2016.models.Cluster;
@@ -54,25 +60,23 @@ public class HouseholdQuery {
     public List<ClusterAlarm> getClusterAlarmsForDevice(String deviceId) {
         for (Cluster cluster : _household.getClusters()) {
             for (Device device : cluster.getDevices()) {
-                if(device.getId().equals(deviceId)){
+                if(device.getId().toString().equals(deviceId)){
                     return cluster.getClusterAlarms();
                 }
             }
         }
 
-        return null;
+        return new ArrayList<ClusterAlarm>();
     }
 
     public ClusterAlarm getNextClusterAlarm(String deviceID) {
         ClusterAlarm nextAlarm = null;
 
         for(ClusterAlarm clusterAlarm : getClusterAlarmsForDevice(deviceID)) {
+            if(!clusterAlarm.getActive()) { continue; }
 
-            if (nextAlarm == null) {
-                nextAlarm = clusterAlarm;
-            }
-
-            if (clusterAlarm.getTimeAsCalendar().compareTo(nextAlarm.getTimeAsCalendar()) > 0) {
+            if (nextAlarm == null ||
+                    clusterAlarm.getTimeAsCalendar().compareTo(nextAlarm.getTimeAsCalendar()) < 0) {
                 nextAlarm = clusterAlarm;
             }
         }
