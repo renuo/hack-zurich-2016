@@ -1,19 +1,13 @@
 package ch.renuo.hackzurich2016.activities;
 
 import android.app.AlertDialog;
-import android.app.LoaderManager;
-import android.content.ContentUris;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -43,8 +37,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +46,6 @@ import java.util.UUID;
 
 import ch.renuo.hackzurich2016.AccountUtils;
 import ch.renuo.hackzurich2016.MainActivity;
-import ch.renuo.hackzurich2016.Manifest;
 import ch.renuo.hackzurich2016.R;
 import ch.renuo.hackzurich2016.UI;
 import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
@@ -70,7 +61,6 @@ import ch.renuo.hackzurich2016.models.Device;
 import ch.renuo.hackzurich2016.models.DeviceImpl;
 import ch.renuo.hackzurich2016.models.Household;
 import ch.renuo.hackzurich2016.models.HouseholdImpl;
-import ch.renuo.hackzurich2016.models.SystemAlarm;
 
 public class HouseholdActivity extends AppCompatActivity {
 

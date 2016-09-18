@@ -5,7 +5,6 @@ import java.util.UUID;
 
 public class DeviceImpl implements Device {
     private UUID id;
-    private List<SystemAlarm> systemAlarm;
     private String imageUrl;
 
     public DeviceImpl(UUID id, String imageUrl) {

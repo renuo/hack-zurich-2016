@@ -12,7 +12,6 @@ import ch.renuo.hackzurich2016.models.Cluster;
 import ch.renuo.hackzurich2016.models.ClusterAlarm;
 import ch.renuo.hackzurich2016.models.Device;
 import ch.renuo.hackzurich2016.models.Household;
-import ch.renuo.hackzurich2016.models.SystemAlarm;
 
 public class HouseholdSerializer {
     private final Household household;
@@ -87,17 +86,6 @@ public class HouseholdSerializer {
         map.put("id", device.getId().toString());
         map.put("imageUrl", device.getImageUrl());
         map.put("clusterId", clusterId.toString());
-        return map;
-    }
-
-    @NonNull
-    private Map<String, Object> getSystemAlarm(UUID clusterId, UUID clusterAlarmId, SystemAlarm systemAlarm) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", systemAlarm.getId().toString());
-        map.put("active", systemAlarm.getActive());
-        map.put("time", systemAlarm.getTime());
-        map.put("clusterId", clusterId.toString());
-        map.put("clusterAlarmId", clusterAlarmId.toString());
         return map;
     }
 }

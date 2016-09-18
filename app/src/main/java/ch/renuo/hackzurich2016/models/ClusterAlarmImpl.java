@@ -10,7 +10,6 @@ public class ClusterAlarmImpl implements ClusterAlarm {
     private UUID id;
     private String time;
     private boolean active;
-    private List<SystemAlarm> systemAlarms;
 
     public ClusterAlarmImpl(UUID id, String time, boolean active) {
         this.id = id;

@@ -13,8 +13,6 @@ import ch.renuo.hackzurich2016.models.Device;
 import ch.renuo.hackzurich2016.models.DeviceImpl;
 import ch.renuo.hackzurich2016.models.Household;
 import ch.renuo.hackzurich2016.models.HouseholdImpl;
-import ch.renuo.hackzurich2016.models.SystemAlarm;
-import ch.renuo.hackzurich2016.models.SystemAlarmImpl;
 
 public class HouseholdDeserializer {
     private final Map<String, Object> serialized;
@@ -90,13 +88,6 @@ public class HouseholdDeserializer {
         String time = (String) serializedClusterAlarm.get("time");
         boolean active = (boolean) serializedClusterAlarm.get("active");
         return new ClusterAlarmImpl(id, time, active);
-    }
-
-    private SystemAlarm getSystemAlarm(Map<String, Object> serializedSystemAlarm) {
-        UUID id = getUuid(serializedSystemAlarm.get("id"));
-        String time = (String) serializedSystemAlarm.get("time");
-        boolean active = (boolean) serializedSystemAlarm.get("active");
-        return new SystemAlarmImpl(id, time, active);
     }
 
     private UUID getUuid(Object id) {

@@ -14,7 +14,6 @@ import ch.renuo.hackzurich2016.models.ClusterImpl;
 import ch.renuo.hackzurich2016.models.Device;
 import ch.renuo.hackzurich2016.models.Household;
 import ch.renuo.hackzurich2016.models.HouseholdImpl;
-import ch.renuo.hackzurich2016.models.SystemAlarm;
 
 /**
  * Created by yk on 17/09/16.

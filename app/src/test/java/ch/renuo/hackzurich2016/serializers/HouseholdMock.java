@@ -14,8 +14,6 @@ import ch.renuo.hackzurich2016.models.Device;
 import ch.renuo.hackzurich2016.models.DeviceImpl;
 import ch.renuo.hackzurich2016.models.Household;
 import ch.renuo.hackzurich2016.models.HouseholdImpl;
-import ch.renuo.hackzurich2016.models.SystemAlarm;
-import ch.renuo.hackzurich2016.models.SystemAlarmImpl;
 
 public class HouseholdMock {
     @NonNull
