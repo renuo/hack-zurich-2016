@@ -1,5 +1,5 @@
 # Rise and Shine #hackzurich16
-## The worlds first distributed alarmclock
+**The worlds first distributed alarmclock**
 
 **Rise and Shine** connects your Alarm to the Cloud. Set your Alarm once to ring on all
 your devices, turn it off on one device to silence them all. **Rise and shine** lets you
