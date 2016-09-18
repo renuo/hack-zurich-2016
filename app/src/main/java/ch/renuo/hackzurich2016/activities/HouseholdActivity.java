@@ -449,7 +449,13 @@ public class HouseholdActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EDIT_ALARM_REQUEST) {
+            if(data == null){
+                return;
+            }
             String clusterId = data.getStringExtra(getString(R.string.cluster_id));
+            if(clusterId == null){
+                return;
+            }
             String alarmId = data.getStringExtra(getString(R.string.alarm_id));
             String alarmTime = data.getStringExtra(getString(R.string.alarm_time));
             boolean alarmActive = data.getBooleanExtra(getString(R.string.alarm_active), false);
