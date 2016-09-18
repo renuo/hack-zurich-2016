@@ -8,7 +8,7 @@ Play Store: https://play.google.com/store/apps/details?id=ch.renuo.hackzurich201
 
 **Rise and Shine** connects your Alarm to the Cloud. Set your Alarm once to ring on all
 your devices, turn it off on one device to silence them all. **Rise and shine** lets you
-also share your Alarms with your beloved once. Never get out of bed too late again.
+also share your Alarms with your beloved ones. Never get out of bed too late again.
 
 _Disclaimer: The authors of Rise and Shine did not really experience any sleep
 during the time of creation_
