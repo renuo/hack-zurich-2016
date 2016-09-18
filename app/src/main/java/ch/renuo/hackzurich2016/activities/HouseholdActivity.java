@@ -74,21 +74,21 @@ public class HouseholdActivity extends AppCompatActivity {
     private HouseholdActivity self = this;
     private PrefsHelper preferences;
 
-    private void redraw(){
+    private void redraw() {
         final Cluster myCluster = getMyCluster();
         List<Cluster> clusters = household.getClusters();
         Collections.sort(clusters, new Comparator<Cluster>() {
             @Override
             public int compare(Cluster o1, Cluster o2) {
-                if(o1 == myCluster)
+                if (o1 == myCluster)
                     return -1;
-                if(o2 == myCluster)
+                if (o2 == myCluster)
                     return 1;
                 return 0;
             }
         });
         final ClusterListAdapter adapter = new ClusterListAdapter(this, clusters);
-        ((ListView)findViewById(R.id.clusterList)).setAdapter(adapter);
+        ((ListView) findViewById(R.id.clusterList)).setAdapter(adapter);
         setUserFromFirebase(FirebaseAuth.getInstance());
         Log.e("r", "redraw");
     }
@@ -125,8 +125,8 @@ public class HouseholdActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 //                        getListView().invalidateViews();
-                        ClusterListAdapter adapter = ((ClusterListAdapter)((ListView)self.findViewById(R.id.clusterList)).getAdapter());
-                        if(adapter != null) {
+                        ClusterListAdapter adapter = ((ClusterListAdapter) ((ListView) self.findViewById(R.id.clusterList)).getAdapter());
+                        if (adapter != null) {
                             adapter.notifyDataSetChanged();
                         }
                         redraw();
@@ -148,11 +148,11 @@ public class HouseholdActivity extends AppCompatActivity {
 
     }
 
-    private void setUser(){
-        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
+    private void setUser() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
             Log.e("p", "permission granted auto");
             setUserFromLocal();
-        }else {
+        } else {
             Log.e("p", "asking for permission");
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_CONTACTS}, 45);
         }
@@ -161,8 +161,8 @@ public class HouseholdActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == 45){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == 45) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.e("p", "permission granted");
                 setUserFromLocal();
             }
@@ -173,11 +173,11 @@ public class HouseholdActivity extends AppCompatActivity {
         Uri photoUrl = AccountUtils.getUserProfile(this).possiblePhoto();
         List<String> names = AccountUtils.getUserProfile(this).possibleNames();
 
-        if(household != null) {
+        if (household != null) {
             Device device = getMyDevice();
             Cluster cluster = getMyCluster();
             if (cluster != null) {
-                if(names != null && names.size() > 0) {
+                if (names != null && names.size() > 0) {
                     String name = names.get(0);
                     if (cluster.getName() == null || cluster.getName().equals("You") || cluster.getName().length() == 0) {
                         cluster.setName(name);
@@ -192,7 +192,7 @@ public class HouseholdActivity extends AppCompatActivity {
                     }
                 }
             }
-        }else{
+        } else {
             Log.e("h", "household null");
         }
     }
@@ -200,7 +200,7 @@ public class HouseholdActivity extends AppCompatActivity {
     private void setUserFromFirebase(@NonNull FirebaseAuth firebaseAuth) {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        if(user != null && household != null) {
+        if (user != null && household != null) {
             Device device = getMyDevice();
             Cluster cluster = getMyCluster();
 
@@ -227,12 +227,12 @@ public class HouseholdActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private HouseholdDatabase initializeDatabase(String householdId, boolean create){
+    private HouseholdDatabase initializeDatabase(String householdId, boolean create) {
         HouseholdDatabase db = new HouseholdDatabaseImpl(UUID.fromString(householdId));
         SuccessValueEventListener<Household> listener = new SuccessValueEventListener<Household>() {
             @Override
             protected void onChange(Household household) {
-                if(household == null){
+                if (household == null) {
                     preferences.edit().clear().apply();
                     self.finish();
                     startActivity(new Intent(self, MainActivity.class));
@@ -240,18 +240,18 @@ public class HouseholdActivity extends AppCompatActivity {
                 }
                 self.household = household;
 
-                Log.e("e","onchange");
+                Log.e("e", "onchange");
                 UI.ui().refreshUI();
 
-                if(getMyCluster() == null){
+                if (getMyCluster() == null) {
                     createNewCluster();
                 }
             }
         };
 
-        if(create) {
+        if (create) {
             db.createHousehold(listener);
-        }else{
+        } else {
             db.listenForUpdates(listener);
         }
         return db;
@@ -267,7 +267,7 @@ public class HouseholdActivity extends AppCompatActivity {
         setUser();
     }
 
-    private class ClusterListAdapter extends ArrayAdapter<Cluster>{
+    private class ClusterListAdapter extends ArrayAdapter<Cluster> {
         private List<Cluster> clusters;
         private Context context;
 
@@ -283,9 +283,9 @@ public class HouseholdActivity extends AppCompatActivity {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final Cluster cluster = clusters.get(position);
             View rowView = inflater.inflate(R.layout.list_row, parent, false);
-            ImageView imageView = (ImageView)rowView.findViewById(R.id.clusterImage);
+            ImageView imageView = (ImageView) rowView.findViewById(R.id.clusterImage);
             setClusterImage(cluster, imageView);
-            ((TextView)rowView.findViewById(R.id.clusterName)).setText(cluster.getName());
+            ((TextView) rowView.findViewById(R.id.clusterName)).setText(cluster.getName());
             rowView.findViewById(R.id.clusterName).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -295,7 +295,7 @@ public class HouseholdActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String result = input.getText().toString();
-                                    if(result != null && result.length() > 0) {
+                                    if (result != null && result.length() > 0) {
                                         cluster.setName(result);
                                         hdb.updateHousehold(self.household);
                                     }
@@ -324,19 +324,19 @@ public class HouseholdActivity extends AppCompatActivity {
                 }
             });
 
-            RecyclerView tlv = (RecyclerView)rowView.findViewById(R.id.timerListView);
+            RecyclerView tlv = (RecyclerView) rowView.findViewById(R.id.timerListView);
             tlv.setLayoutManager(new LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false));
             TimerListAdapter adapter = new TimerListAdapter(cluster, cluster.getClusterAlarms());
             tlv.setAdapter(adapter);
             return rowView;
         }
 
-        private class TimerListAdapter extends RecyclerView.Adapter<ViewHolder>{
+        private class TimerListAdapter extends RecyclerView.Adapter<ViewHolder> {
 
             private Cluster cluster;
             private List<ClusterAlarm> alarms;
 
-            public TimerListAdapter(Cluster cluster, List<ClusterAlarm> alarms){
+            public TimerListAdapter(Cluster cluster, List<ClusterAlarm> alarms) {
                 this.cluster = cluster;
                 this.alarms = alarms;
             }
@@ -344,12 +344,13 @@ public class HouseholdActivity extends AppCompatActivity {
             @Override
             public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.timer_item, parent, false);
-                return new ViewHolder(v){};
+                return new ViewHolder(v) {
+                };
             }
 
             @Override
             public void onBindViewHolder(ViewHolder holder, int position) {
-                final TextView tc = (TextView)holder.itemView.findViewById(R.id.textClock);
+                final TextView tc = (TextView) holder.itemView.findViewById(R.id.textClock);
                 final ClusterAlarm alarm = this.alarms.get(position);
                 tc.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -388,25 +389,25 @@ public class HouseholdActivity extends AppCompatActivity {
     }
 
     private void setClusterImage(Cluster cluster, final ImageView imageView) {
-        if(cluster == null)
+        if (cluster == null)
             return;
         String imageUrl = null;
         for (Device device : cluster.getDevices()) {
-            if(device.getImageUrl() != null && device.getImageUrl().length() > 0){
+            if (device.getImageUrl() != null && device.getImageUrl().length() > 0) {
                 imageUrl = device.getImageUrl();
                 break;
             }
         }
-        if(imageUrl == null) {
+        if (imageUrl == null) {
             Log.e("i", "no image");
             return;
         }
         final String finalImageUrl = imageUrl;
         Log.e("i", finalImageUrl);
-        if(imageUrl.startsWith("content")){
+        if (imageUrl.startsWith("content")) {
             imageView.setImageResource(0);
             imageView.setImageURI(Uri.parse(imageUrl));
-        }else {
+        } else {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -427,29 +428,29 @@ public class HouseholdActivity extends AppCompatActivity {
         }
     }
 
-    private Cluster findClusterById(String id){
+    private Cluster findClusterById(String id) {
         for (Cluster cluster : this.household.getClusters()) {
-            if(cluster.getId().toString().equals(id)){
+            if (cluster.getId().toString().equals(id)) {
                 return cluster;
             }
         }
         return null;
     }
 
-    private Pair<Cluster, ClusterAlarm> findAlarmById(String id){
+    private Pair<Cluster, ClusterAlarm> findAlarmById(String id) {
         for (Cluster cluster : this.household.getClusters()) {
             for (ClusterAlarm alarm : cluster.getClusterAlarms()) {
-                if(alarm.getId().toString().equals(id)){
+                if (alarm.getId().toString().equals(id)) {
                     return Pair.create(cluster, alarm);
                 }
             }
         }
         return null;
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == EDIT_ALARM_REQUEST){
+        if (requestCode == EDIT_ALARM_REQUEST) {
             String clusterId = data.getStringExtra(getString(R.string.cluster_id));
             String alarmId = data.getStringExtra(getString(R.string.alarm_id));
             String alarmTime = data.getStringExtra(getString(R.string.alarm_time));
@@ -457,24 +458,20 @@ public class HouseholdActivity extends AppCompatActivity {
             boolean alarmNew = data.getBooleanExtra(getString(R.string.alarm_new), false);
 
             Pair<Cluster, ClusterAlarm> pp = findAlarmById(alarmId);
-            if(resultCode > 0 && pp != null){
+            if (resultCode > 0 && pp != null) {
                 Cluster cluster = pp.first;
                 ClusterAlarm alarm = pp.second;
                 cluster.getClusterAlarms().remove(alarm);
                 hdb.updateHousehold(self.household);
-            }
+            } else if (resultCode == 0) {
 
-            else if(resultCode == 0){
-
-                if(alarmNew) {
+                if (alarmNew) {
                     Cluster cluster = findClusterById(clusterId);
                     ClusterAlarm alarm = new ClusterAlarmImpl(UUID.randomUUID(), alarmTime, alarmActive);
                     cluster.getClusterAlarms().add(alarm);
                     hdb.updateHousehold(self.household);
                     Log.e("n", "newalarm");
-                }
-
-                else if(pp != null){
+                } else if (pp != null) {
                     ClusterAlarm alarm = pp.second;
                     alarm.setTime(alarmTime);
                     alarm.setActive(alarmActive);
@@ -482,9 +479,7 @@ public class HouseholdActivity extends AppCompatActivity {
                 }
             }
 
-        }
-
-        else if (requestCode== AcquireEmailHelper.RC_SIGN_IN) {
+        } else if (requestCode == AcquireEmailHelper.RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 Log.e("a", "auth result is not ok");
                 // user is signed in!
@@ -498,7 +493,7 @@ public class HouseholdActivity extends AppCompatActivity {
         }
     }
 
-    public void addMemberButtonClicked(View view){
+    public void addMemberButtonClicked(View view) {
         startActivity(getBarcodeIntent(this.householdId));
     }
 
@@ -513,7 +508,7 @@ public class HouseholdActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
-        if(menu.size() > 0) {
+        if (menu.size() > 0) {
             boolean hasUser = FirebaseAuth.getInstance().getCurrentUser() == null;
             menu.getItem(1).setVisible(hasUser);
             menu.getItem(2).setVisible(!hasUser);
@@ -533,9 +528,7 @@ public class HouseholdActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(self, MainActivity.class));
             return true;
-        }
-
-        else if (id == R.id.action_login){
+        } else if (id == R.id.action_login) {
             Log.e("a", "login");
             startActivityForResult(
                     AuthUI.getInstance().createSignInIntentBuilder()
@@ -545,9 +538,7 @@ public class HouseholdActivity extends AppCompatActivity {
                             .build(),
                     AcquireEmailHelper.RC_SIGN_IN);
             return true;
-        }
-
-        else if (id == R.id.action_logout){
+        } else if (id == R.id.action_logout) {
             Log.e("a", "logout");
             FirebaseAuth auth = FirebaseAuth.getInstance();
             auth.signOut();
