@@ -1,7 +1,6 @@
 package ch.renuo.hackzurich2016.alarms;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -21,7 +20,7 @@ public class SystemAlarmService extends Service {
     public static final String TAG = "SystemAlarmService";
     public static final String STOP_ALARM_EVENT = "STOP_ALARM_EVENT";
 
-    public PrefsHelper prefs;
+    private PrefsHelper preferences;
     private HouseholdDatabase _db;
     private AlarmScheduler _scheduler;
 
@@ -43,12 +42,12 @@ public class SystemAlarmService extends Service {
     }
 
     private void initializeDatabase() {
-        if(prefs.getHouseholdId() == null) {
+        if(preferences.getHouseholdId() == null) {
             stopSelf();
             return;
         }
 
-        this._db = new HouseholdDatabaseImpl(UUID.fromString(prefs.getHouseholdId()));
+        this._db = new HouseholdDatabaseImpl(UUID.fromString(preferences.getHouseholdId()));
         _db.listenForUpdates(new SuccessValueEventListener<Household>() {
 
             @Override
@@ -69,13 +68,13 @@ public class SystemAlarmService extends Service {
             }
 
             private ClusterAlarm getNextClusterAlarm(Household household) {
-                return new HouseholdQuery(household).getNextClusterAlarm(prefs.getDeviceId());
+                return new HouseholdQuery(household).getNextClusterAlarm(preferences.getDeviceId());
             }
         });
     }
 
     private void initializePrefs() {
-        this.prefs = new PrefsHelper(getApplicationContext());
+        this.preferences = new PrefsHelper(getApplicationContext());
     }
 
     @Override
