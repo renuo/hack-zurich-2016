@@ -1,4 +1,4 @@
-package ch.renuo.hackzurich2016;
+package ch.renuo.hackzurich2016.utils;
 
 /**
  * Created by yk on 17/09/16.
@@ -14,7 +14,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
-import android.telephony.TelephonyManager;
 import android.util.Patterns;
 
 import com.google.android.gms.auth.GoogleAuthUtil;

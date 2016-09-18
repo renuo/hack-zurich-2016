@@ -12,7 +12,7 @@ import ch.renuo.hackzurich2016.data.HouseholdDatabase;
 import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
 import ch.renuo.hackzurich2016.data.HouseholdQuery;
 import ch.renuo.hackzurich2016.data.SuccessValueEventListener;
-import ch.renuo.hackzurich2016.helpers.PrefsHelper;
+import ch.renuo.hackzurich2016.utils.PrefUtils;
 import ch.renuo.hackzurich2016.models.ClusterAlarm;
 import ch.renuo.hackzurich2016.models.Household;
 
@@ -20,7 +20,7 @@ public class SystemAlarmService extends Service {
     public static final String TAG = "SystemAlarmService";
     public static final String STOP_ALARM_EVENT = "STOP_ALARM_EVENT";
 
-    private PrefsHelper preferences;
+    private PrefUtils preferences;
     private HouseholdDatabase _db;
     private AlarmScheduler _scheduler;
 
@@ -74,7 +74,7 @@ public class SystemAlarmService extends Service {
     }
 
     private void initializePrefs() {
-        this.preferences = new PrefsHelper(getApplicationContext());
+        this.preferences = new PrefUtils(getApplicationContext());
     }
 
     @Override

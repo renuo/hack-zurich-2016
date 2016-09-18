@@ -23,7 +23,7 @@ import ch.renuo.hackzurich2016.data.HouseholdDatabase;
 import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
 import ch.renuo.hackzurich2016.data.HouseholdQuery;
 import ch.renuo.hackzurich2016.data.SuccessValueEventListener;
-import ch.renuo.hackzurich2016.helpers.PrefsHelper;
+import ch.renuo.hackzurich2016.utils.PrefUtils;
 import ch.renuo.hackzurich2016.models.ClusterAlarm;
 import ch.renuo.hackzurich2016.models.Household;
 
@@ -34,7 +34,7 @@ public class AlarmActivity extends AppCompatActivity {
     private ClusterAlarm _currentAlarm;
     private String _currentAlarmId;
     private Household _household;
-    public PrefsHelper prefs;
+    public PrefUtils prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class AlarmActivity extends AppCompatActivity {
     }
 
     private void initializePrefs() {
-       this.prefs = new PrefsHelper(this);
+       this.prefs = new PrefUtils(this);
     }
 
     @Override

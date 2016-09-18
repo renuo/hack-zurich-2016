@@ -8,11 +8,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -26,7 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,7 +43,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-import ch.renuo.hackzurich2016.AccountUtils;
+import ch.renuo.hackzurich2016.utils.AccountUtils;
 import ch.renuo.hackzurich2016.MainActivity;
 import ch.renuo.hackzurich2016.R;
 import ch.renuo.hackzurich2016.UI;
@@ -54,11 +53,10 @@ import ch.renuo.hackzurich2016.data.HouseholdDatabase;
 import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
 import ch.renuo.hackzurich2016.data.HouseholdQuery;
 import ch.renuo.hackzurich2016.data.SuccessValueEventListener;
-import ch.renuo.hackzurich2016.helpers.PrefsHelper;
+import ch.renuo.hackzurich2016.utils.PrefUtils;
 import ch.renuo.hackzurich2016.models.Cluster;
 import ch.renuo.hackzurich2016.models.ClusterAlarm;
 import ch.renuo.hackzurich2016.models.ClusterAlarmImpl;
-import ch.renuo.hackzurich2016.models.ClusterImpl;
 import ch.renuo.hackzurich2016.models.Device;
 import ch.renuo.hackzurich2016.models.DeviceImpl;
 import ch.renuo.hackzurich2016.models.Household;
@@ -72,7 +70,7 @@ public class HouseholdActivity extends AppCompatActivity {
     private Household household = new HouseholdImpl(UUID.randomUUID(), new ArrayList<Cluster>());
     private HouseholdDatabase hdb;
     private HouseholdActivity self = this;
-    private PrefsHelper preferences;
+    private PrefUtils preferences;
 
     private void redraw() {
         final Cluster myCluster = getMyCluster();
@@ -105,7 +103,7 @@ public class HouseholdActivity extends AppCompatActivity {
     }
 
     private void initializePreferences() {
-        this.preferences = new PrefsHelper(this);
+        this.preferences = new PrefUtils(this);
     }
 
     @Override

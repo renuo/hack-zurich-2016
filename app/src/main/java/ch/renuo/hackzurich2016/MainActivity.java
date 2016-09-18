@@ -10,11 +10,11 @@ import android.view.View;
 import java.util.UUID;
 
 import ch.renuo.hackzurich2016.activities.HouseholdActivity;
-import ch.renuo.hackzurich2016.helpers.PrefsHelper;
+import ch.renuo.hackzurich2016.utils.PrefUtils;
 
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE = 23;
-    private PrefsHelper preferences;
+    private PrefUtils preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializePreferences() {
-        this.preferences = new PrefsHelper(getApplicationContext());
+        this.preferences = new PrefUtils(getApplicationContext());
     }
 
     private void goToHousehold(String householdId, boolean create) {
