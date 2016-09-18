@@ -39,13 +39,25 @@ public class HouseholdQuery {
     }
 
     public ClusterAlarm findClusterAlarmById(String id) {
-        for (Cluster cluster : this._household.getClusters()) {
+        for (Cluster cluster : _household.getClusters()) {
             for (ClusterAlarm alarm : cluster.getClusterAlarms()) {
                 if (alarm.getId().toString().equals(id)) {
                     return alarm;
                 }
             }
         }
+        return null;
+    }
+
+    public Cluster findClusterByDeviceId(String deviceId) {
+        for (Cluster cluster : _household.getClusters()) {
+            for (Device device : cluster.getDevices()) {
+                if(device.getId().toString().equals(deviceId)){
+                    return cluster;
+                }
+            }
+        }
+
         return null;
     }
 

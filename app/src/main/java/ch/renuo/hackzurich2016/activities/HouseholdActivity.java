@@ -49,8 +49,10 @@ import ch.renuo.hackzurich2016.MainActivity;
 import ch.renuo.hackzurich2016.R;
 import ch.renuo.hackzurich2016.UI;
 import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
+import ch.renuo.hackzurich2016.data.ClusterFactory;
 import ch.renuo.hackzurich2016.data.HouseholdDatabase;
 import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
+import ch.renuo.hackzurich2016.data.HouseholdQuery;
 import ch.renuo.hackzurich2016.data.SuccessValueEventListener;
 import ch.renuo.hackzurich2016.helpers.PrefsHelper;
 import ch.renuo.hackzurich2016.models.Cluster;
@@ -73,8 +75,8 @@ public class HouseholdActivity extends AppCompatActivity {
     private PrefsHelper preferences;
 
     private void redraw(){
-        final Cluster myCluster = findMyCluster(this.household);
-        List<Cluster> clusters = this.household.getClusters();
+        final Cluster myCluster = getMyCluster();
+        List<Cluster> clusters = household.getClusters();
         Collections.sort(clusters, new Comparator<Cluster>() {
             @Override
             public int compare(Cluster o1, Cluster o2) {
@@ -170,22 +172,23 @@ public class HouseholdActivity extends AppCompatActivity {
     private void setUserFromLocal() {
         Uri photoUrl = AccountUtils.getUserProfile(this).possiblePhoto();
         List<String> names = AccountUtils.getUserProfile(this).possibleNames();
-        if(self.household != null) {
-            Device device = findMyDevice(self.household);
-            Cluster cluster = findMyCluster(self.household);
+
+        if(household != null) {
+            Device device = getMyDevice();
+            Cluster cluster = getMyCluster();
             if (cluster != null) {
                 if(names != null && names.size() > 0) {
                     String name = names.get(0);
                     if (cluster.getName() == null || cluster.getName().equals("You") || cluster.getName().length() == 0) {
                         cluster.setName(name);
-                        hdb.updateHousehold(self.household);
+                        hdb.updateHousehold(household);
                     }
                 }
                 if (photoUrl != null) {
                     String imageUrl = photoUrl.toString();
                     if (device.getImageUrl() == null) {
                         device.setImageUrl(imageUrl);
-                        hdb.updateHousehold(self.household);
+                        hdb.updateHousehold(household);
                     }
                 }
             }
@@ -197,21 +200,22 @@ public class HouseholdActivity extends AppCompatActivity {
     private void setUserFromFirebase(@NonNull FirebaseAuth firebaseAuth) {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        if(user != null && self.household != null) {
-            Device device = findMyDevice(self.household);
-            Cluster cluster = findMyCluster(self.household);
+        if(user != null && household != null) {
+            Device device = getMyDevice();
+            Cluster cluster = getMyCluster();
+
             if (cluster != null) {
-                String name = user.getDisplayName();
+
                 if (cluster.getName() == null || cluster.getName().equals("You") || cluster.getName().length() == 0) {
-                    cluster.setName(name);
-                    hdb.updateHousehold(self.household);
+                    cluster.setName(user.getDisplayName());
+                    hdb.updateHousehold(household);
                 }
+
                 Uri photoUrl = user.getPhotoUrl();
                 if (photoUrl != null) {
-                    String imageUrl = photoUrl.toString();
-                    if (device.getImageUrl() == null || !device.getImageUrl().equals(imageUrl)) {
-                        device.setImageUrl(imageUrl);
-                        hdb.updateHousehold(self.household);
+                    if (device.getImageUrl() == null || !device.getImageUrl().equals(photoUrl.toString())) {
+                        device.setImageUrl(photoUrl.toString());
+                        hdb.updateHousehold(household);
                     }
                 }
             }
@@ -221,30 +225,6 @@ public class HouseholdActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    private Device findMyDevice(Household household){
-        for (Cluster cluster : household.getClusters()) {
-            for (Device device : cluster.getDevices()) {
-                if(device.getId().equals(self.deviceId)){
-                    return device;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    private Cluster findMyCluster(Household household){
-        for (Cluster cluster : household.getClusters()) {
-            for (Device device : cluster.getDevices()) {
-                if(device.getId().equals(self.deviceId)){
-                    return cluster;
-                }
-            }
-        }
-
-        return null;
     }
 
     private HouseholdDatabase initializeDatabase(String householdId, boolean create){
@@ -263,20 +243,13 @@ public class HouseholdActivity extends AppCompatActivity {
                 Log.e("e","onchange");
                 UI.ui().refreshUI();
 
-                //ensure that we ourselves are in the list
-                Cluster myCluster = findMyCluster(household);
-                if(myCluster == null){
-                    myCluster = new ClusterImpl(UUID.randomUUID(), "You", new ArrayList<ClusterAlarm>(), new ArrayList<Device>());
-                    // TODO: add image url from file
-                    String imageUrl = null;
-                    myCluster.getDevices().add(new DeviceImpl(self.deviceId, imageUrl));
-                    household.getClusters().add(myCluster);
-                    hdb.updateHousehold(household);
-                    setUser();
+                if(getMyCluster() == null){
+                    createNewCluster();
                 }
             }
         };
-        if(create){
+
+        if(create) {
             db.createHousehold(listener);
         }else{
             db.listenForUpdates(listener);
@@ -284,6 +257,15 @@ public class HouseholdActivity extends AppCompatActivity {
         return db;
     }
 
+    private void createNewCluster() {
+        Cluster myCluster = ClusterFactory.getDefault();
+        // TODO: add image url from file
+        String imageUrl = null;
+        myCluster.getDevices().add(new DeviceImpl(self.deviceId, imageUrl));
+        household.getClusters().add(myCluster);
+        hdb.updateHousehold(household);
+        setUser();
+    }
 
     private class ClusterListAdapter extends ArrayAdapter<Cluster>{
         private List<Cluster> clusters;
@@ -493,7 +475,6 @@ public class HouseholdActivity extends AppCompatActivity {
                 }
 
                 else if(pp != null){
-                    Cluster cluster = pp.first;
                     ClusterAlarm alarm = pp.second;
                     alarm.setTime(alarmTime);
                     alarm.setActive(alarmActive);
@@ -518,21 +499,24 @@ public class HouseholdActivity extends AppCompatActivity {
     }
 
     public void addMemberButtonClicked(View view){
+        startActivity(getBarcodeIntent(this.householdId));
+    }
+
+    @NonNull
+    private Intent getBarcodeIntent(String householdId) {
         Intent intent = new Intent(this, BarcodeActivity.class);
-        intent.putExtra(getString(R.string.household_id), this.householdId);
-        startActivity(intent);
+        return intent.putExtra(getString(R.string.household_id), householdId);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
         if(menu.size() > 0) {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            menu.getItem(1).setVisible(user == null);
-            menu.getItem(2).setVisible(user != null);
+            boolean hasUser = FirebaseAuth.getInstance().getCurrentUser() == null;
+            menu.getItem(1).setVisible(hasUser);
+            menu.getItem(2).setVisible(!hasUser);
         }
 
         return true;
@@ -543,9 +527,9 @@ public class HouseholdActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_leave_household) {
-            Cluster myCluster = findMyCluster(self.household);
+            Cluster myCluster = getMyCluster();
             self.household.getClusters().remove(myCluster);
-            getApplicationContext().getSharedPreferences(PrefsHelper.PREFKEY, Context.MODE_PRIVATE).edit().clear().apply();
+            preferences.edit().clear().apply();
             finish();
             startActivity(new Intent(self, MainActivity.class));
             return true;
@@ -573,6 +557,12 @@ public class HouseholdActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private Cluster getMyCluster() {
+        return new HouseholdQuery(household).findClusterByDeviceId(preferences.getDeviceId());
+    }
 
+    private Device getMyDevice() {
+        return new HouseholdQuery(household).findDeviceById(preferences.getDeviceId());
+    }
 
 }
