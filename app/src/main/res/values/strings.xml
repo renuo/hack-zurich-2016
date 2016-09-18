@@ -13,4 +13,5 @@
     <string name="join_group">Join Existing Household</string>
     <string name="create_group">Register New Household</string>
     <string name="title_activity_barcode">BarcodeActivity</string>
+    <string name="rise_and_shine">Rise &amp; Shine</string>
 </resources>

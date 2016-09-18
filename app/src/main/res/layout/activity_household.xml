@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,11 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:contentDescription="Rise and Shine"
+        android:contentDescription="@string/rise_and_shine"
         android:scaleType="centerCrop"
         android:src="@drawable/rise_and_shine_light" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -27,19 +28,48 @@
             android:id="@+id/clusterList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="130px"
+            android:layout_column="0"
+            android:layout_row="0"
             android:background="#ccffffff"
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingTop="@dimen/activity_vertical_margin"></ListView>
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-120px"
-            android:backgroundTint="@color/colorPrimary"
-            android:onClick="addMemberButtonClicked"
-            android:text="Invite Member to Household" />
+            android:layout_gravity="bottom|right"
+            fab:menu_colorNormal="@color/colorPrimary"
+            fab:menu_colorPressed="@color/colorAccent"
+            fab:menu_colorRipple="@color/colorSecondary">
 
-    </LinearLayout>
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_item_add_household"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="addMemberButtonClicked"
+                android:src="@drawable/ic_person_add_white_24dp"
+                fab:fab_colorNormal="#2f6aff"
+                fab:fab_colorPressed="@color/com_facebook_messenger_blue"
+                fab:fab_colorRipple="#b5d9ff"
+                fab:fab_label="Invite Member to Household"
+                fab:fab_size="mini" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_item_add_cluster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="addMemberButtonClicked"
+                android:src="@drawable/fab_add"
+                fab:menu_colorNormal="#d00"
+                fab:menu_colorPressed="#f33"
+                fab:menu_colorRipple="#fcc"
+                fab:fab_label="Pair devices / ring together"
+                fab:fab_size="mini" />
+        </com.github.clans.fab.FloatingActionMenu>
+
+
+    </FrameLayout>
 </RelativeLayout>
+
+    <!--<android.support.design.widget.FloatingActionButton--><!--android:id="@+id/button"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_column="0"--><!--android:layout_gravity="right|bottom"--><!--android:layout_row="0"--><!--android:backgroundTint="@color/colorPrimary"--><!--android:clickable="true"--><!--android:onClick="addMemberButtonClicked"--><!--android:src="@drawable/ic_input_add_white"--><!--app:elevation="4dp"--><!--android:layout_marginBottom="10dp"--><!--android:layout_marginRight="10dp"--><!--app:fabSize="normal" />-->
