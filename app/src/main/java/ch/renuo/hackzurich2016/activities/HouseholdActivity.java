@@ -63,17 +63,14 @@ import ch.renuo.hackzurich2016.models.Household;
 import ch.renuo.hackzurich2016.models.HouseholdImpl;
 
 public class HouseholdActivity extends AppCompatActivity {
-
     public static final int EDIT_ALARM_REQUEST = 1;
 
     private UUID deviceId;
     private String householdId;
-
     private Household household = new HouseholdImpl(UUID.randomUUID(), new ArrayList<Cluster>());
-
     private HouseholdDatabase hdb;
-
     private HouseholdActivity self = this;
+    private PrefsHelper preferences;
 
     private void redraw(){
         final Cluster myCluster = findMyCluster(this.household);
@@ -97,7 +94,16 @@ public class HouseholdActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        initializePreferences();
+        startSystemAlarmService();
+    }
+
+    private void startSystemAlarmService() {
         startService(new Intent(this, SystemAlarmService.class));
+    }
+
+    private void initializePreferences() {
+        this.preferences = new PrefsHelper(this);
     }
 
     @Override
@@ -109,7 +115,6 @@ public class HouseholdActivity extends AppCompatActivity {
         this.deviceId = UUID.fromString(intent.getStringExtra(getString(R.string.device_id)));
         this.householdId = intent.getStringExtra(getString(R.string.household_id));
         boolean create = intent.getBooleanExtra(getString(R.string.create_household), false);
-
 
         UI.ui().registerRefreshCallback(new Runnable() {
             @Override
@@ -218,14 +223,6 @@ public class HouseholdActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-//    private HouseholdDatabaseMock initializeDatabase(String householdId){
-//        if(HouseholdDatabaseMock.db == null){
-//            HouseholdDatabaseMock.db = new HouseholdDatabaseMock(householdId);
-//        }
-//        Log.e("e", "initializing db");
-//        return HouseholdDatabaseMock.db;
-//    }
-
     private Device findMyDevice(Household household){
         for (Cluster cluster : household.getClusters()) {
             for (Device device : cluster.getDevices()) {
@@ -256,7 +253,7 @@ public class HouseholdActivity extends AppCompatActivity {
             @Override
             protected void onChange(Household household) {
                 if(household == null){
-                    getApplicationContext().getSharedPreferences(PrefsHelper.PREFKEY, Context.MODE_PRIVATE).edit().clear().apply();
+                    preferences.edit().clear().apply();
                     self.finish();
                     startActivity(new Intent(self, MainActivity.class));
                     return;
@@ -528,8 +525,6 @@ public class HouseholdActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
