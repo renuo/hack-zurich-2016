@@ -1,6 +1,7 @@
 package ch.renuo.hackzurich2016.alarms;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -23,11 +24,11 @@ public class SystemAlarmService extends Service {
     public PrefsHelper prefs;
     private HouseholdDatabase _db;
     private AlarmScheduler _scheduler;
+    private int id;
 
     @Override
     public void onCreate() {
         initializePrefs();
-        initializeDatabase();
         initializeScheduler();
     }
 
@@ -35,7 +36,20 @@ public class SystemAlarmService extends Service {
         this._scheduler = new AlarmScheduler(getApplicationContext());
     }
 
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "Destroying Service");
+        super.onDestroy();
+    }
+
     private void initializeDatabase() {
+    showToast("householdId: " + prefs.getHouseholdId());
+        if(prefs.getHouseholdId() == null) {
+            showToast("Stopping Background Service");
+            stopSelf();
+            return;
+        }
+
         this._db = new HouseholdDatabaseImpl(UUID.fromString(prefs.getHouseholdId()));
         _db.listenForUpdates(new SuccessValueEventListener<Household>() {
 
@@ -43,12 +57,16 @@ public class SystemAlarmService extends Service {
             protected void onChange(Household household) {
                 if(household == null){
                     Log.d(TAG, "Household is null");
+                    showToast("Stopping Background Service: No DB");
                     stopSelf();
                     return;
                 }
 
+                showToast("Updating Alarms from DB");
+
                 ClusterAlarm nextAlarm = getNextClusterAlarm(household);
                 if(nextAlarm == null) {
+                    showToast("Cancel Alarms from DB");
                     cancelScheduledAlarm();
                 } else {
                     scheduleAlarm(nextAlarm);
@@ -62,11 +80,14 @@ public class SystemAlarmService extends Service {
     }
 
     private void initializePrefs() {
-        this.prefs = new PrefsHelper(this);
+        this.prefs = new PrefsHelper(getApplicationContext());
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(TAG, "Starting with startId: " + startId);
+        this.id = startId;
+        initializeDatabase();
         return START_STICKY;
     }
 
@@ -81,11 +102,12 @@ public class SystemAlarmService extends Service {
     }
 
     private void cancelScheduledAlarm() {
-        showToast("Canceling Alarm");
         _scheduler.cancelStartAlarm(null);
     }
 
+
     private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "[" + this.id + "]" + message, Toast.LENGTH_SHORT).show();
     }
+
 }

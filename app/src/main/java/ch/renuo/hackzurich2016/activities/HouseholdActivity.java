@@ -61,6 +61,7 @@ import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
 import ch.renuo.hackzurich2016.data.HouseholdDatabase;
 import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
 import ch.renuo.hackzurich2016.data.SuccessValueEventListener;
+import ch.renuo.hackzurich2016.helpers.PrefsHelper;
 import ch.renuo.hackzurich2016.models.Cluster;
 import ch.renuo.hackzurich2016.models.ClusterAlarm;
 import ch.renuo.hackzurich2016.models.ClusterAlarmImpl;
@@ -101,6 +102,12 @@ public class HouseholdActivity extends AppCompatActivity {
         ((ListView)findViewById(R.id.clusterList)).setAdapter(adapter);
         setUserFromFirebase(FirebaseAuth.getInstance());
         Log.e("r", "redraw");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startService(new Intent(this, SystemAlarmService.class));
     }
 
     @Override
@@ -259,19 +266,15 @@ public class HouseholdActivity extends AppCompatActivity {
             @Override
             protected void onChange(Household household) {
                 if(household == null){
-                    self.getSharedPreferences(MainActivity.PREFKEY, Context.MODE_PRIVATE).edit().clear().commit();
+                    getApplicationContext().getSharedPreferences(PrefsHelper.PREFKEY, Context.MODE_PRIVATE).edit().clear().apply();
                     self.finish();
                     startActivity(new Intent(self, MainActivity.class));
                     return;
                 }
                 self.household = household;
 
-                Intent service = new Intent(self, SystemAlarmService.class);
-                startService(service);
-
                 Log.e("e","onchange");
                 UI.ui().refreshUI();
-
 
                 //ensure that we ourselves are in the list
                 Cluster myCluster = findMyCluster(household);
@@ -557,7 +560,7 @@ public class HouseholdActivity extends AppCompatActivity {
         if (id == R.id.action_leave_household) {
             Cluster myCluster = findMyCluster(self.household);
             self.household.getClusters().remove(myCluster);
-            self.getSharedPreferences(MainActivity.PREFKEY, Context.MODE_PRIVATE).edit().clear().commit();
+            getApplicationContext().getSharedPreferences(PrefsHelper.PREFKEY, Context.MODE_PRIVATE).edit().clear().apply();
             finish();
             startActivity(new Intent(self, MainActivity.class));
             return true;

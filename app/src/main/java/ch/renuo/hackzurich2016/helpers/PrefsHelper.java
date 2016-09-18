@@ -2,6 +2,8 @@ package ch.renuo.hackzurich2016.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import ch.renuo.hackzurich2016.R;
 
 public class PrefsHelper {

@@ -6,17 +6,18 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import java.util.UUID;
 
 import ch.renuo.hackzurich2016.activities.HouseholdActivity;
 import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
+import ch.renuo.hackzurich2016.helpers.PrefsHelper;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static final String PREFKEY = "com.renuo.hackzurich2016.prefs";
     public static final int REQUEST_CODE = 23;
+    public PrefsHelper prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 //        this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE).edit().clear().commit();
 
         setContentView(R.layout.activity_main);
+
 
 //        FirebaseAuth auth = FirebaseAuth.getInstance();
 //        auth.signOut();
@@ -53,19 +55,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        String householdId = this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE).getString(getString(R.string.household_id), null);
+        this.prefs = new PrefsHelper(getApplicationContext());
+
+        String householdId = prefs.getHouseholdId();
         if(householdId != null){
             goToHousehold(householdId, false);
         }
     }
 
     private void goToHousehold(String householdId, boolean create) {
-        SharedPreferences prefs = this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE);
-        String deviceId = prefs.getString(getString(R.string.device_id), null);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(PrefsHelper.PREFKEY, Context.MODE_PRIVATE);
+        String deviceId = prefs.getDeviceId();
         if (deviceId == null) {
             deviceId = UUID.randomUUID().toString();
-            prefs.edit().putString(getString(R.string.device_id), deviceId).commit();
+            pref.edit().putString(getString(R.string.device_id), deviceId).apply();
         }
+
+        getApplicationContext().getSharedPreferences(PrefsHelper.PREFKEY, Context.MODE_PRIVATE).edit().putString(getString(R.string.household_id), householdId).apply();
 
         Intent intent = new Intent(this, HouseholdActivity.class);
         intent.putExtra(getString(R.string.device_id), deviceId);
@@ -77,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onCreateHouseholdClick(View view) {
         String householdId = UUID.randomUUID().toString();
-        this.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE).edit().putString(getString(R.string.household_id), householdId).commit();
+        Log.d("MainActivity", "setting householdId to: " + householdId);
         goToHousehold(householdId, true);
     }
 
