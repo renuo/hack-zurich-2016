@@ -43,7 +43,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-import ch.renuo.hackzurich2016.utils.AccountUtils;
 import ch.renuo.hackzurich2016.MainActivity;
 import ch.renuo.hackzurich2016.R;
 import ch.renuo.hackzurich2016.UI;
@@ -53,7 +52,6 @@ import ch.renuo.hackzurich2016.data.HouseholdDatabase;
 import ch.renuo.hackzurich2016.data.HouseholdDatabaseImpl;
 import ch.renuo.hackzurich2016.data.HouseholdQuery;
 import ch.renuo.hackzurich2016.data.SuccessValueEventListener;
-import ch.renuo.hackzurich2016.utils.PrefUtils;
 import ch.renuo.hackzurich2016.models.Cluster;
 import ch.renuo.hackzurich2016.models.ClusterAlarm;
 import ch.renuo.hackzurich2016.models.ClusterAlarmImpl;
@@ -61,6 +59,8 @@ import ch.renuo.hackzurich2016.models.Device;
 import ch.renuo.hackzurich2016.models.DeviceImpl;
 import ch.renuo.hackzurich2016.models.Household;
 import ch.renuo.hackzurich2016.models.HouseholdImpl;
+import ch.renuo.hackzurich2016.utils.AccountUtils;
+import ch.renuo.hackzurich2016.utils.PrefUtils;
 
 public class HouseholdActivity extends AppCompatActivity {
     public static final int EDIT_ALARM_REQUEST = 1;
@@ -530,16 +530,13 @@ public class HouseholdActivity extends AppCompatActivity {
             Log.e("a", "login");
             startActivityForResult(
                     AuthUI.getInstance().createSignInIntentBuilder()
-                            .setProviders(
-                                    AuthUI.EMAIL_PROVIDER,
-                                    AuthUI.GOOGLE_PROVIDER)
-                            .build(),
-                    AcquireEmailHelper.RC_SIGN_IN);
+                            .setProviders(AuthUI.EMAIL_PROVIDER, AuthUI.GOOGLE_PROVIDER,
+                                    AuthUI.FACEBOOK_PROVIDER)
+                            .build(), AcquireEmailHelper.RC_SIGN_IN);
             return true;
         } else if (id == R.id.action_logout) {
             Log.e("a", "logout");
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-            auth.signOut();
+            FirebaseAuth.getInstance().signOut();
             return true;
         }
 
