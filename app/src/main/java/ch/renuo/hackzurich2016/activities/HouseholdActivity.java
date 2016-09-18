@@ -317,7 +317,7 @@ public class HouseholdActivity extends AppCompatActivity {
             ImageView imageView = (ImageView)rowView.findViewById(R.id.clusterImage);
             setClusterImage(cluster, imageView);
             ((TextView)rowView.findViewById(R.id.clusterName)).setText(cluster.getName());
-            ((TextView)rowView.findViewById(R.id.clusterName)).setOnClickListener(new View.OnClickListener() {
+            rowView.findViewById(R.id.clusterName).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final EditText input = new EditText(self);
@@ -342,7 +342,7 @@ public class HouseholdActivity extends AppCompatActivity {
                     ).show();
                 }
             });
-            ((ImageButton)rowView.findViewById(R.id.addAlarmButton)).setOnClickListener(new View.OnClickListener() {
+            rowView.findViewById(R.id.addAlarmButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(self, EditAlarmActivity.class);
