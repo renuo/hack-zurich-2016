@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 String contents = data.getStringExtra("SCAN_RESULT");
+                initializePreferences();
                 goToHousehold(contents, false);
             }
             if (resultCode == RESULT_CANCELED) {
