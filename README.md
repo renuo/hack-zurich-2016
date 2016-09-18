@@ -23,6 +23,8 @@ _Note: Order of names is not of significance_
 
 ## Screenshots
 
+![Overview](https://github.com/renuo/hack-zurich-2016/blob/master/graphical_design/promo-logo.png)
+
 ![Welcome Screen](https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/welcome_screen.png)
 _Welcome Screen_
 
