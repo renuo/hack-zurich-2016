@@ -25,14 +25,7 @@ _Note: Order of names is not of significance_
 
 ![Overview](https://github.com/renuo/hack-zurich-2016/blob/master/graphical_design/promo-logo.png)
 
-![Welcome Screen](https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/welcome_screen.png)
-_Welcome Screen_
-
-![Barcode Screen](https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/barcode_screen.png)
-_Barcode Screen_
-
-![Household Screen](https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/household_screen.png)
-_Household Screen_
-
-![Add Actions](https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/add_actions.png)
-_Add Actions_
+<img src="https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/welcome_screen.png" width="200px"/>
+<img src="https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/barcode_screen.png" width="200px"/>
+<img src="https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/household_screen.png" width="200px"/>
+<img src="https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/add_actions.png" width="200px"/>
