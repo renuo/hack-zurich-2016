@@ -23,4 +23,8 @@ public class PrefsHelper {
     public String getHouseholdId() {
         return _prefs.getString(_context.getString(R.string.household_id), null);
     }
+
+    public SharedPreferences.Editor edit() {
+       return _prefs.edit();
+    }
 }

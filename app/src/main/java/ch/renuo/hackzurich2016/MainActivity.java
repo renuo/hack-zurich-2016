@@ -1,8 +1,6 @@
 package ch.renuo.hackzurich2016;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,12 +10,11 @@ import android.view.View;
 import java.util.UUID;
 
 import ch.renuo.hackzurich2016.activities.HouseholdActivity;
-import ch.renuo.hackzurich2016.alarms.SystemAlarmService;
 import ch.renuo.hackzurich2016.helpers.PrefsHelper;
 
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE = 23;
-    public PrefsHelper prefs;
+    private PrefsHelper preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,23 +52,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        this.prefs = new PrefsHelper(getApplicationContext());
+        initializePreferences();
 
-        String householdId = prefs.getHouseholdId();
+        String householdId = preferences.getHouseholdId();
         if(householdId != null){
             goToHousehold(householdId, false);
         }
     }
 
+    private void initializePreferences() {
+        this.preferences = new PrefsHelper(getApplicationContext());
+    }
+
     private void goToHousehold(String householdId, boolean create) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(PrefsHelper.PREFKEY, Context.MODE_PRIVATE);
-        String deviceId = prefs.getDeviceId();
+        String deviceId = preferences.getDeviceId();
         if (deviceId == null) {
             deviceId = UUID.randomUUID().toString();
-            pref.edit().putString(getString(R.string.device_id), deviceId).apply();
+            preferences.edit().putString(getString(R.string.device_id), deviceId).apply();
         }
 
-        getApplicationContext().getSharedPreferences(PrefsHelper.PREFKEY, Context.MODE_PRIVATE).edit().putString(getString(R.string.household_id), householdId).apply();
+        preferences.edit().putString(getString(R.string.household_id), householdId).apply();
 
         Intent intent = new Intent(this, HouseholdActivity.class);
         intent.putExtra(getString(R.string.device_id), deviceId);
