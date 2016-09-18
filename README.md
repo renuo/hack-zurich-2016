@@ -1,4 +1,7 @@
-# Rise and Shine #hackzurich16
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d81b82f5fb5648c98a0af130eefdf96e)](https://www.codacy.com/app/lukaselmer/hack-zurich-2016?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=renuo/hack-zurich-2016&amp;utm_campaign=Badge_Grade)
+
+# Rise & Shine #hackzurich16
+
 **The worlds first distributed alarmclock**
 
 **Rise and Shine** connects your Alarm to the Cloud. Set your Alarm once to ring on all
