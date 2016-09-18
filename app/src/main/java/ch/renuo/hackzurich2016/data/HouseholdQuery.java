@@ -65,7 +65,7 @@ public class HouseholdQuery {
     public Device findDeviceById(String deviceId) {
         for (Cluster cluster : _household.getClusters()) {
             for (Device device : cluster.getDevices()) {
-                if(device.getId().equals(deviceId)){
+                if(device.getId().toString().equals(deviceId)){
                     return device;
                 }
             }
