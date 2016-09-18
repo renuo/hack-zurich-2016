@@ -1,5 +1,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d81b82f5fb5648c98a0af130eefdf96e)](https://www.codacy.com/app/lukaselmer/hack-zurich-2016?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=renuo/hack-zurich-2016&amp;utm_campaign=Badge_Grade)
 
+Play Store: https://play.google.com/store/apps/details?id=ch.renuo.hackzurich2016
+
 # Rise & Shine #hackzurich16
 
 **The worlds first distributed alarmclock**
