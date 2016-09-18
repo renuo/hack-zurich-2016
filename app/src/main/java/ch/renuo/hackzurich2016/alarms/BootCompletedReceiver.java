@@ -12,9 +12,8 @@ public class BootCompletedReceiver extends WakefulBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-
             Log.i("BootCompletedReceiver", "Boot is complete");
-//            context.startService(new Intent(context, SystemAlarmService.class));
+            context.startService(new Intent(context, SystemAlarmService.class));
         }
     }
 }
