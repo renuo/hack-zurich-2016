@@ -24,12 +24,12 @@ public class SystemAlarmService extends Service {
     public PrefsHelper prefs;
     private HouseholdDatabase _db;
     private AlarmScheduler _scheduler;
-    private int id;
 
     @Override
     public void onCreate() {
         initializePrefs();
         initializeScheduler();
+        initializeDatabase();
     }
 
     private void initializeScheduler() {
@@ -43,9 +43,7 @@ public class SystemAlarmService extends Service {
     }
 
     private void initializeDatabase() {
-    showToast("householdId: " + prefs.getHouseholdId());
         if(prefs.getHouseholdId() == null) {
-            showToast("Stopping Background Service");
             stopSelf();
             return;
         }
@@ -62,11 +60,8 @@ public class SystemAlarmService extends Service {
                     return;
                 }
 
-                showToast("Updating Alarms from DB");
-
                 ClusterAlarm nextAlarm = getNextClusterAlarm(household);
                 if(nextAlarm == null) {
-                    showToast("Cancel Alarms from DB");
                     cancelScheduledAlarm();
                 } else {
                     scheduleAlarm(nextAlarm);
@@ -86,8 +81,6 @@ public class SystemAlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "Starting with startId: " + startId);
-        this.id = startId;
-        initializeDatabase();
         return START_STICKY;
     }
 
@@ -107,7 +100,7 @@ public class SystemAlarmService extends Service {
 
 
     private void showToast(String message) {
-//        Toast.makeText(this, "[" + this.id + "]" + message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 }
