@@ -8,8 +8,8 @@ android {
         applicationId "ch.renuo.hackzurich2016"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 3
-        versionName "3"
+        versionCode 4
+        versionName "4"
 //        jackOptions {
 //            enabled true
 //        }
