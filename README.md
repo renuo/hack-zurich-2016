@@ -1,4 +1,7 @@
-# Rise and Shine #hackzurich16
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d81b82f5fb5648c98a0af130eefdf96e)](https://www.codacy.com/app/lukaselmer/hack-zurich-2016?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=renuo/hack-zurich-2016&amp;utm_campaign=Badge_Grade)
+
+# Rise & Shine #hackzurich16
+
 **The worlds first distributed alarmclock**
 
 **Rise and Shine** connects your Alarm to the Cloud. Set your Alarm once to ring on all
@@ -20,14 +23,9 @@ _Note: Order of names is not of significance_
 
 ## Screenshots
 
-![Welcome Screen](https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/welcome_screen.png)
-_Welcome Screen_
+![Overview](https://github.com/renuo/hack-zurich-2016/blob/master/graphical_design/promo-logo.png)
 
-![Barcode Screen](https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/barcode_screen.png)
-_Barcode Screen_
-
-![Household Screen](https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/household_screen.png)
-_Household Screen_
-
-![Add Actions](https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/add_actions.png)
-_Add Actions_
+<img src="https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/welcome_screen.png" width="200px"/>
+<img src="https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/barcode_screen.png" width="200px"/>
+<img src="https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/household_screen.png" width="200px"/>
+<img src="https://github.com/renuo/hack-zurich-2016/blob/master/doc/screenshots/add_actions.png" width="200px"/>
