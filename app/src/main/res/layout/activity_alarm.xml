@@ -1,43 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/main_backgroundImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:contentDescription="Risen and Shine"
+        android:scaleType="centerCrop"
+        android:src="@drawable/rise_and_shine_light" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
         <TextClock
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/textClock"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:enabled="true"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentStart="false"
-            android:textSize="75dp"
-            android:includeFontPadding="false"
-            android:padding="25dp"
-            android:textAlignment="center" />
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="75sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:id="@+id/alarmUUIDTextView"
-            android:layout_below="@+id/textClock"
-            android:layout_centerHorizontal="true" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:gravity="bottom"
+            android:orientation="vertical">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Turn off"
-            android:id="@+id/turnOffButton"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:enabled="true"
-            android:onClick="onTurnOffButtonClick" />
-    </RelativeLayout>
-</LinearLayout>
+            <TextView
+                android:id="@+id/alarmUUIDTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textClock"
+                android:text="Small Text"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <Button
+                android:id="@+id/turnOffButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:enabled="true"
+                android:onClick="onTurnOffButtonClick"
+                android:text="Turn off"
+                android:textAlignment="center" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
